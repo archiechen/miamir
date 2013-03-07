@@ -1,0 +1,8 @@
+<div id="tasks_wall"></div>
+<script type="text/javascript">
+  $(function() {
+    // Blog is the app name
+    window.router = new Miamir.Routers.DashboardRouter({tasks: <%= @tasks.to_json.html_safe -%>});
+    Backbone.history.start();
+  });
+</script>
