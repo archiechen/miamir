@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create! :email => 'yachuan.chen@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi'
+puts 'New user created: ' << user.email
+user2 = User.create! :email => 'yue.zhang@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi'
+puts 'New user created: ' << user2.email

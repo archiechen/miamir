@@ -52,6 +52,13 @@
               <li><%= link_to "Planning", "/planning"  %></li>
               <li><%= link_to "Burning", "/burning"  %></li>
               <li><%= link_to "Review", "/review"  %></li>
+              <% if current_user %>
+              <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %> </li>
+              <li><%= link_to('Change Password', edit_registration_path(:user)) %></li>
+              <% else %>
+              <li><%= link_to('Register', new_registration_path(:user)) %> </li>
+              <li><%= link_to('Login', new_session_path(:user)) %></li>
+              <% end %>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
