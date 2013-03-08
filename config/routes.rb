@@ -1,7 +1,9 @@
 Miamir::Application.routes.draw do
   devise_for :users
 
-  resources :tasks
+  resources :tasks do
+    put :checkin, :on => :member
+  end
   resources :users
 
 

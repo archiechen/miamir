@@ -70,6 +70,7 @@ class TasksController < ApplicationController
     end
   end
 
+
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
@@ -81,4 +82,12 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # PUT /tasks/1/checkin
+  def checkin
+    @task = Task.find(params[:id])
+    @task.checkin(current_user)
+    render json: @task
+  end
+
 end

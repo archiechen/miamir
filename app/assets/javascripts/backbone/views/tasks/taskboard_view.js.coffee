@@ -37,10 +37,8 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
       from_collection.find (from_task)->
         if from_task.cid == cid
           ui.draggable.fadeOut ()->
-            from_task.save({status:that.options.name,updated_at:new Date().toISOString()},
-              success : (task) =>
-                from_collection.remove from_task
-                that.options.tasks.add task 
-                that.render()
-            )
+            from_task.checkin (task)->
+              from_collection.remove from_task
+              that.options.tasks.add task 
+              that.render()
             

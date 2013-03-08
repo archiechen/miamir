@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
     @progress_tasks = Task.where(:status=>'Progress').all
     @done_tasks = Task.where(:status=>'Done').all
 
-    Rails.logger.debug current_user
+    logger.debug current_user
   end
 
 end
