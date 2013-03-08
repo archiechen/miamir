@@ -14,14 +14,18 @@
 }
 
 .well-taskcard {
-    background-color: white;
-    border: 1px solid #AAA;
-    color: #222;
-    display: list-item;
-    float: left;
-    height: 104px;
-    list-style: none;
-    margin: 0.3em;
-    padding: 0.2em;
-    width: 96%;
+  background-color: white;
+  border: 1px solid #AAA;
+  color: #222;
+  display: list-item;
+  float: left;
+  height: 104px;
+  list-style: none;
+  margin: 0.3em;
+  padding: 0.2em;
+  width: 96%;
+}
+
+.well-taskboard-active {
+  background-color: #FFFF99;
 }

@@ -14,14 +14,17 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     width = event.currentTarget.offsetWidth
     drag = $(@el).clone()
     drag.css('width',width+"px")
+    drag.attr('data-cid',@model.cid)
     return drag
 
   render: ->
+    that = this
     $(@el).html(@template(@model.toJSON()))
+    $(@el).unbind()
     $(@el).draggable({
         addClasses: false,
         cancel: "a.ui-icon",
-        revert: true,
+        revert: "invalid",
         containment: "document",
         helper:@helper,
         cursor: "move"
