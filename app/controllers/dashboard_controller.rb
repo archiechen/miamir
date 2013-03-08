@@ -1,5 +1,7 @@
 class DashboardController < ApplicationController
   def index
-    @tasks = Task.all
+    @ready_tasks = Task.where(:status=>'Ready').all
+    @progress_tasks = Task.where(:status=>'Progress').all
+    @done_tasks = Task.where(:status=>'Done').all
   end
 end

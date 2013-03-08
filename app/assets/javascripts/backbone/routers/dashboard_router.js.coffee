@@ -1,11 +1,14 @@
 class Miamir.Routers.DashboardRouter extends Backbone.Router
   initialize: (options) ->
     @ready_tasks = new Miamir.Collections.TasksCollection()
-    @ready_tasks.reset options.tasks
+    @ready_tasks.reset options.ready_tasks
 
     @progress_tasks = new Miamir.Collections.TasksCollection()
-    @done_tasks = new Miamir.Collections.TasksCollection()
+    @progress_tasks.reset options.progress_tasks
     
+    @done_tasks = new Miamir.Collections.TasksCollection()
+    @done_tasks.reset options.done_tasks
+
   routes:
     ".*"        : "index"
 

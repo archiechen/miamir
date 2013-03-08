@@ -3,7 +3,9 @@ class Miamir.Models.Task extends Backbone.Model
 
   defaults:
     title: null
+    status: null
     description: null
+
 
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task
