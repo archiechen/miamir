@@ -5,7 +5,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
   tagName: "div"
 
-  className: "well well-taskcard"
+  className: "well-taskcard"
 
   initialize:()->
     _.bindAll(this, 'helper');
