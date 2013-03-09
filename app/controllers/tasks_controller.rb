@@ -90,4 +90,18 @@ class TasksController < ApplicationController
     render json: @task
   end
 
+  # PUT /tasks/1/checkout
+  def checkout
+    @task = Task.find(params[:id])
+    @task.checkout()
+    render json: @task
+  end
+
+  # PUT /tasks/1/done
+  def done
+    @task = Task.find(params[:id])
+    @task.done()
+    render json: @task
+  end
+
 end

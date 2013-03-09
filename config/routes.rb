@@ -3,6 +3,8 @@ Miamir::Application.routes.draw do
 
   resources :tasks do
     put :checkin, :on => :member
+    put :checkout, :on => :member
+    put :done, :on => :member
   end
   resources :users
 

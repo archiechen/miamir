@@ -7,4 +7,12 @@ class Task < ActiveRecord::Base
     self.update_attributes(:owner=>user,:status=>'Progress')
   end
 
+  def checkout
+    self.update_attributes(:owner=>nil,:status=>'Ready')
+  end
+
+  def done
+    self.update_attributes(:owner=>nil,:status=>'Done')
+  end
+
 end

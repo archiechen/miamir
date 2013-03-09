@@ -6,12 +6,20 @@ class Miamir.Models.Task extends Backbone.Model
     status: null
     description: null
 
-  checkin:(callback)->
-    $.ajax '/tasks/'+@id+"/checkin",
+  putjson:(url,callback)->
+    $.ajax url,
       type: 'PUT'
       dataType: 'json'
       success:callback
 
+  checkin:(callback)->
+    @putjson '/tasks/'+@id+"/checkin",callback
+
+  checkout:(callback)->
+    @putjson '/tasks/'+@id+"/checkout",callback
+
+  done:(callback)->
+    @putjson '/tasks/'+@id+"/done",callback
 
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task
