@@ -87,7 +87,7 @@ class TasksController < ApplicationController
   def checkin
     @task = Task.find(params[:id])
     @task.checkin(current_user)
-    render json: @task
+    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
   end
 
   # PUT /tasks/1/checkout

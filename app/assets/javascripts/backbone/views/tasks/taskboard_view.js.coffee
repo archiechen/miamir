@@ -34,7 +34,6 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
 
   drop: (event,ui)->
     that = this
-    console.log this
     cid = $(ui.helper).attr('data-cid')
     _.each @options.from_tasks,(from_collection)->
       from_collection.find (from_task)->
@@ -45,14 +44,6 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
               that.options.tasks.add task 
               that.render()
   
-class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
-  initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
-    @name = "Progress"
-
-  dropped_handle:(from_task,callback)->
-    from_task.checkin callback
-
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
     Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
@@ -60,6 +51,18 @@ class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.Taskboard
 
   dropped_handle:(from_task,callback)->
     from_task.checkout callback
+
+class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
+  initialize: () =>
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    @name = "Progress"
+  #override add one
+  addOne: (task) =>
+    view = new Miamir.Views.Tasks.ProgressTaskCardView({model : task})
+    @$(".well-taskboard").append(view.render().el).fadeIn()
+
+  dropped_handle:(from_task,callback)->
+    from_task.checkin callback
 
 class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>

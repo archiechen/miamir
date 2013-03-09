@@ -13,12 +13,41 @@
   margin: 0.4em;
 }
 
+.list-card-members {
+float: right;
+margin: 2px -12px -5px 0;
+}
+
+.member {
+  color: #444;
+  display: block;
+  float: left;
+  height: 30px;
+  margin: 0 1px 1px 0;
+  overflow: hidden;
+  position: relative;
+  width: 30px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 0;
+  text-decoration: none;
+}
+
 .well-taskcard {
   border: 0px;
   list-style:none;
   margin:1em;
   float:left;
   width:86%;
+}
+
+.well-taskcard h5{
+  height:75%;
 }
 
 .well-taskcard a{

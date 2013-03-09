@@ -30,3 +30,16 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
         cursor: "move"
     })
     return this
+
+class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCardView
+
+  gravatar_templ: _.template('<div class="list-card-members"><img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>"></div>'),
+
+  initialize:()->
+    Miamir.Views.Tasks.TaskCardView.prototype.initialize.call(this)
+
+  render: ->
+    Miamir.Views.Tasks.TaskCardView.prototype.render.call(this);
+    @$('#card').append(@gravatar_templ(@model.get('owner')))
+    return this
+  

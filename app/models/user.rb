@@ -9,4 +9,11 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
+  before_create :set_gravatar
+
+  private
+    def set_gravatar
+      self.gravatar = Digest::MD5.hexdigest(self.email)
+    end
+
 end
