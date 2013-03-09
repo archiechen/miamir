@@ -1,3 +1,4 @@
+#encoding: utf-8
 class Task < ActiveRecord::Base
   attr_accessible :owner, :description, :status, :title
 
@@ -5,18 +6,22 @@ class Task < ActiveRecord::Base
 
   def checkin(user)
     if user.task
-      self.errors.add(:checkin_on, "Bad Request") 
       return false
     end 
     self.update_attributes(:owner=>user,:status=>'Progress')
   end
 
-  def checkout
-    self.update_attributes(:owner=>nil,:status=>'Ready')
+  def checkout(user)
+    self.not_owner(user)? false : self.update_attributes(:owner=>nil,:status=>'Ready')
   end
 
-  def done
-    self.update_attributes(:owner=>nil,:status=>'Done')
+  def done(user)
+    self.not_owner(user)? false : self.update_attributes(:owner=>nil,:status=>'Done')
   end
+
+  protected 
+    def not_owner(user)
+      return self.owner.id!=user.id
+    end
 
 end

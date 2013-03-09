@@ -96,15 +96,21 @@ class TasksController < ApplicationController
   # PUT /tasks/1/checkout
   def checkout
     @task = Task.find(params[:id])
-    @task.checkout()
-    render json: @task
+    if @task.checkout(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    else
+      render json: @task,:status => :unauthorized
+    end
   end
 
   # PUT /tasks/1/done
   def done
     @task = Task.find(params[:id])
-    @task.done()
-    render json: @task
+    if @task.done(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    else
+      render json: @task,:status => :unauthorized
+    end
   end
 
 end

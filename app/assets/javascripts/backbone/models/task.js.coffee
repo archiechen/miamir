@@ -11,10 +11,11 @@ class Miamir.Models.Task extends Backbone.Model
       type: 'PUT'
       dataType: 'json'
       success:callback
-      error:(xhr, options, error)->
+      error:(xhr, options, message)->
         bootbox.classes "alert-box"
         switch xhr.status
-          when 400 then bootbox.alert "一步一个脚印,同时只做一件事。"
+          when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行书。"
+          when 401 then bootbox.alert "这不是你的任务。"
 
   checkin:(callback)->
     @putjson '/tasks/'+@id+"/checkin",callback
