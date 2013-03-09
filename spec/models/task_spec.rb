@@ -18,8 +18,10 @@ describe Task do
       @task.owner.should == @user
     end
 
-    it "如果当前用户有任务正在处理中，checkin应该返回false" do
-      @task.checkin(@user_hastask).should be_false
+    it "如果当前用户有任务正在处理中，checkin应该raise BadRequest" do
+      expect{
+        @task.checkin(@user_hastask)
+      }.to raise_error(ActiveResource::BadRequest)
       @task.status.should == "Ready"
       @task.owner.should == nil
     end
@@ -30,8 +32,10 @@ describe Task do
       @progress_task.owner.should == nil
     end
 
-    it "如果不是自己的任务，checkout应该返回false" do
-      @progress_task.checkout(@user).should be_false
+    it "如果不是自己的任务，checkout应该raise UnauthorizedAccess" do
+      expect{
+        @progress_task.checkout(@user)
+      }.to raise_error(ActiveResource::UnauthorizedAccess)
       @progress_task.status.should == "Progress"
       @progress_task.owner.should == @user_hastask
     end
