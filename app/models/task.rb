@@ -4,6 +4,10 @@ class Task < ActiveRecord::Base
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
 
   def checkin(user)
+    if user.task
+      self.errors.add(:checkin_on, "Bad Request") 
+      return false
+    end 
     self.update_attributes(:owner=>user,:status=>'Progress')
   end
 

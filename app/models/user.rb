@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
+  has_one :task,:foreign_key=>"owner_id"
+
   before_create :set_gravatar
 
   private

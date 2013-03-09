@@ -38,11 +38,11 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     _.each @options.from_tasks,(from_collection)->
       from_collection.find (from_task)->
         if from_task.cid == cid
-          ui.draggable.fadeOut ()->
-            from_collection.remove from_task
-            that.dropped_handle.call that,from_task,(task)->
-              that.options.tasks.add task 
-              that.render()
+          that.dropped_handle.call that,from_task,(task)->
+            ui.draggable.fadeOut ()->
+              from_collection.remove from_task
+            that.options.tasks.add task 
+            that.render()
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
