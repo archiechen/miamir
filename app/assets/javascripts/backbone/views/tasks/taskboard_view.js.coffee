@@ -13,6 +13,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
       return task.get 'id'
     _.bindAll @, "drop"
     _.bindAll @, "remove"
+    _.bindAll @, "on_error"
     
   addAll: () =>
     @options.tasks.each(@addOne)
@@ -49,12 +50,18 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
           from_task.bind "put_error",that.on_error
           that.dropped_handle.call that,from_task
 
-  on_error:(xhr)->
+  on_error:(xhr,task)->
     bootbox.classes "alert-box"
     switch xhr.status
       when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行书。"
       when 401 then bootbox.alert "这不是你的任务。"
-    from_task.unbind "put_error",@on_error
+      when 409 
+        bootbox.classes "prompt-box"
+        estimate_view = new Miamir.Views.Tasks.EstimateView({model:task})
+        bootbox.confirm estimate_view.render().el, (result) ->
+          estimate_view.save() if result
+
+    task.unbind "put_error",@on_error
 
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView

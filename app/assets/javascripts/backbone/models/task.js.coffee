@@ -6,15 +6,16 @@ class Miamir.Models.Task extends Backbone.Model
     status: null
     description: null
 
-  putjson:(url)->
+  putjson:(url,data="")->
     that = this
     $.ajax url,
       type: 'PUT'
+      data: data
       dataType: 'json'
       success:(new_task)->
         that.trigger('put_success',that,new_task)
       error:(xhr, options, message)->
-        that.trigger('put_error',xhr)
+        that.trigger('put_error',xhr,that)
 
   checkin:->
     @putjson '/tasks/'+@id+"/checkin"
@@ -24,6 +25,9 @@ class Miamir.Models.Task extends Backbone.Model
 
   done:->
     @putjson '/tasks/'+@id+"/done"
+
+  estimate:(value)->
+    @putjson '/tasks/'+@id+"/checkin",{estimate:value}
 
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task

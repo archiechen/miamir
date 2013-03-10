@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .alert-box{width:20em;margin-left:-180px;}
+.prompt-box{width:40em;margin-left:-260px;}
 
 .taskboard-header { border-bottom: 1px solid #eeeeee; margin: 5px 0 10px; padding-bottom: 9px; }
 
@@ -38,6 +39,12 @@ margin: 2px -12px -5px 0;
   user-select: none;
   z-index: 0;
   text-decoration: none;
+}
+
+.badges {
+  float: left;
+  margin: 0;
+  padding: 0 0 2px;
 }
 
 .well-taskcard {
