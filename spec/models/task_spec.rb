@@ -17,6 +17,7 @@ describe Task do
       @task.checkin(@user).should be_true
       @task.status.should == "Progress"
       @task.owner.should == @user
+      @task.should have(1).durations
     end
 
     it "If the current user is being processed in the task, checkin should raise BadRequest" do

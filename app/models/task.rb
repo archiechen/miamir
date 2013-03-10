@@ -3,6 +3,7 @@ class Task < ActiveRecord::Base
   attr_accessible :owner,:estimate, :description, :status, :title
 
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
+  has_many :durations
 
   def checkin(user)
     if user.task
@@ -11,17 +12,28 @@ class Task < ActiveRecord::Base
     if self.estimate == 0
       raise ActiveResource::ResourceConflict, "Resource Conflict"
     end
-    self.update_attributes(:owner=>user,:status=>'Progress')
+    Task.transaction do
+      self.durations.create!(:owner=>user)
+      self.update_attributes!(:owner=>user,:status=>'Progress')
+    end
   end
 
   def checkout(user)
     self.check_owner(user)
-    self.update_attributes(:owner=>nil,:status=>'Ready')
+    Task.transaction do
+      duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
+      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
+      self.update_attributes(:owner=>nil,:status=>'Ready')
+    end
   end
 
   def done(user)
     self.check_owner(user)
-    self.update_attributes(:owner=>nil,:status=>'Done')
+    Task.transaction do
+      duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
+      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
+      self.update_attributes(:owner=>nil,:status=>'Done')
+    end
   end
 
   protected
