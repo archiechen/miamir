@@ -46,7 +46,16 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     _.each @options.from_tasks,(from_collection)->
       from_collection.find (from_task)->
         if from_task.cid == cid
+          from_task.bind "put_error",that.on_error
           that.dropped_handle.call that,from_task
+
+  on_error:(xhr)->
+    bootbox.classes "alert-box"
+    switch xhr.status
+      when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行书。"
+      when 401 then bootbox.alert "这不是你的任务。"
+    from_task.unbind "put_error",@on_error
+
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>

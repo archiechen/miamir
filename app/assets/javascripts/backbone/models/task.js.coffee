@@ -14,7 +14,7 @@ class Miamir.Models.Task extends Backbone.Model
       success:(new_task)->
         that.trigger('put_success',that,new_task)
       error:(xhr, options, message)->
-        that.trigger('put_error',[xhr, options, message])
+        that.trigger('put_error',xhr)
 
   checkin:->
     @putjson '/tasks/'+@id+"/checkin"
