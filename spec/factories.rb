@@ -13,6 +13,7 @@ FactoryGirl.define do
     title "one task"
     description "one task description"
     status "Ready"
+    estimate 10
 
     factory :progress_task do
       status "Progress"

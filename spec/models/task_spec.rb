@@ -9,23 +9,35 @@ describe Task do
 
     @user_hastask = FactoryGirl.create(:user_hastask)
     @progress_task = FactoryGirl.create(:progress_task,:owner_id=>2)
+    @ready_task = FactoryGirl.create(:task,:estimate=>0)
   end
 
-  describe "operation on dashboard" do
-    it "如果当前用户没有处理中的任务，checkin应该返回true" do
+  describe "checkin" do
+    it "If the current user does not have the processing task, checkin should return true" do
       @task.checkin(@user).should be_true
       @task.status.should == "Progress"
       @task.owner.should == @user
     end
 
-    it "如果当前用户有任务正在处理中，checkin应该raise BadRequest" do
+    it "If the current user is being processed in the task, checkin should raise BadRequest" do
       expect{
         @task.checkin(@user_hastask)
       }.to raise_error(ActiveResource::BadRequest)
       @task.status.should == "Ready"
       @task.owner.should == nil
     end
+    
+    it "If the estimate of a task is 0, checkin should raise ResourceConflict" do
+      expect{
+        @ready_task.checkin(@user)
+      }.to raise_error(ActiveResource::ResourceConflict)
+      @task.status.should == "Ready"
+      @task.owner.should == nil
+    end
 
+  end
+
+  describe "checkout" do
     it "如果是自己的任务，checkout应该返回true" do
       @progress_task.checkout(@user_hastask).should be_true
       @progress_task.status.should == "Ready"

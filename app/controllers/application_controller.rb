@@ -7,4 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from(ActiveResource::UnauthorizedAccess){
     render json:{},:status => 401
   }
+  rescue_from(ActiveResource::ResourceConflict){
+    render json:{},:status => 409
+  }
 end

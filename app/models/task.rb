@@ -8,6 +8,9 @@ class Task < ActiveRecord::Base
     if user.task
       raise ActiveResource::BadRequest,"Bad Request"
     end
+    if self.estimate == 0
+      raise ActiveResource::ResourceConflict, "Resource Conflict"
+    end
     self.update_attributes(:owner=>user,:status=>'Progress')
   end
 

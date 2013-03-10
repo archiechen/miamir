@@ -6,25 +6,24 @@ class Miamir.Models.Task extends Backbone.Model
     status: null
     description: null
 
-  putjson:(url,callback)->
+  putjson:(url)->
+    that = this
     $.ajax url,
       type: 'PUT'
       dataType: 'json'
-      success:callback
+      success:(new_task)->
+        that.trigger('put_success',that,new_task)
       error:(xhr, options, message)->
-        bootbox.classes "alert-box"
-        switch xhr.status
-          when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行书。"
-          when 401 then bootbox.alert "这不是你的任务。"
+        that.trigger('put_error',[xhr, options, message])
 
-  checkin:(callback)->
-    @putjson '/tasks/'+@id+"/checkin",callback
+  checkin:->
+    @putjson '/tasks/'+@id+"/checkin"
 
-  checkout:(callback)->
-    @putjson '/tasks/'+@id+"/checkout",callback
+  checkout:->
+    @putjson '/tasks/'+@id+"/checkout"
 
-  done:(callback)->
-    @putjson '/tasks/'+@id+"/done",callback
+  done:->
+    @putjson '/tasks/'+@id+"/done"
 
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task

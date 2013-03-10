@@ -7,8 +7,15 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
   className: "well-taskcard"
 
-  initialize:()->
+  initialize:->
     _.bindAll(this, 'helper');
+    _.bindAll(this, 'remove_card');
+    @.model.bind 'put_success',@remove_card
+
+  remove_card:->
+    console.log "remove card."
+    $(@el).fadeOut()
+    @.model.unbind 'put_success',@remove_card
 
   helper: (event)->
     width = event.currentTarget.offsetWidth
