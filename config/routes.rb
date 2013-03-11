@@ -2,9 +2,13 @@ Miamir::Application.routes.draw do
   devise_for :users
 
   resources :tasks do
-    put :checkin, :on => :member
-    put :checkout, :on => :member
-    put :done, :on => :member
+    member do
+      put :checkin
+      put :checkout
+      put :done
+      put :pair
+      delete :pair,:action=>"leave"
+    end
   end
   resources :users
 

@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_one :task,:foreign_key=>"owner_id"
 
+  has_one :partnership,:class_name=>"Task",:foreign_key=>"partner_id"
+
   before_create :set_gravatar
 
   private

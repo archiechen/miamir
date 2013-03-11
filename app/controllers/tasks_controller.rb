@@ -105,4 +105,18 @@ class TasksController < ApplicationController
     render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
   end
 
+  # PUT /tasks/1/pair
+  def pair
+    @task = Task.find(params[:id])
+    @task.pair(current_user)
+    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+  end
+
+  # DELETE /tasks/1/pair
+  def leave
+    @task = Task.find(params[:id])
+    @task.leave(current_user)
+    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+  end
+
 end

@@ -7,28 +7,34 @@ class Miamir.Models.Task extends Backbone.Model
     description: null
     estimate: 0
 
-  putjson:(url,data="")->
+  http_call:(method,url,event,data="")->
     that = this
     $.ajax url,
-      type: 'PUT'
+      type: method
       data: data
       dataType: 'json'
       success:(new_task)->
-        that.trigger('put_success',that,new_task)
+        that.trigger(event,{old_task:that,new_task:new_task})
       error:(xhr, options, message)->
         that.trigger('put_error',xhr,that)
 
   checkin:->
-    @putjson '/tasks/'+@id+"/checkin"
+    @http_call 'PUT','/tasks/'+@id+"/checkin","drag_completed"
 
   checkout:->
-    @putjson '/tasks/'+@id+"/checkout"
+    @http_call 'PUT','/tasks/'+@id+"/checkout","drag_completed"
 
   done:->
-    @putjson '/tasks/'+@id+"/done"
+    @http_call 'PUT','/tasks/'+@id+"/done","drag_completed"
 
   estimate:(value)->
-    @putjson '/tasks/'+@id+"/checkin",{estimate:value}
+    @http_call 'PUT','/tasks/'+@id+"/checkin","drag_completed",{estimate:value}
+
+  pair:->
+    @http_call 'PUT','/tasks/'+@id+"/pair","paired_completed"
+
+  leave:->
+    @http_call 'DELETE','/tasks/'+@id+"/pair","paired_completed"
 
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task

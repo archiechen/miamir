@@ -19,18 +19,15 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.each(@addOne)
 
   addOne: (task) =>
-    console.log 'call add one'
-    task.bind 'put_success',@remove
+    task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
     @$(".well-taskboard").append(view.render().el).fadeIn()
 
-  remove:(task)=>
-    console.log "remove from "+@name
-    @options.tasks.remove task
-    task.unbind 'put_success',@remove
+  remove:(event)=>
+    @options.tasks.remove event.old_task
+    event.old_task.unbind 'drag_completed',@remove
 
   render: () =>
-    console.log 'render board '+@name
     $(@el).html(@template(name:@name))
     @addAll()
     @$(".well-taskboard").attr("id",@name)
@@ -53,7 +50,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   on_error:(xhr,task)->
     bootbox.classes "alert-box"
     switch xhr.status
-      when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行书。"
+      when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行代码。"
       when 401 then bootbox.alert "这不是你的任务。"
       when 409 
         bootbox.classes "prompt-box"
@@ -72,14 +69,13 @@ class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.Taskboard
 
   dropped_handle:(from_task)->
     that = this
-    from_task.bind "put_success",@on_checkout
+    from_task.bind "drag_completed",@on_checkout
     from_task.checkout()
 
-  on_checkout:(old,task)->
-    console.log "on check out"
-    this.options.tasks.add(task,{silent: true})
+  on_checkout:(event)->
+    this.options.tasks.add(event.new_task,{silent: true})
     this.render()
-    old.unbind "put_success",@on_checkout
+    event.old_task.unbind "drag_completed",@on_checkout
 
 class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
@@ -88,21 +84,18 @@ class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.Taskbo
     _.bindAll @, "on_checkin"
   #override add one
   addOne: (task) =>
-    console.log 'call add progress one'
-    task.bind 'put_success',@remove
+    task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.ProgressTaskCardView({model : task})
     @$(".well-taskboard").append(view.render().el).fadeIn()
 
   dropped_handle:(from_task)->
-    console.log 'bind on checkin'
-    from_task.bind "put_success",@on_checkin
+    from_task.bind "drag_completed",@on_checkin
     from_task.checkin()
 
-  on_checkin:(old,task)->
-    console.log "on check in"
-    @options.tasks.add(task,{silent: true})
+  on_checkin:(event)->
+    @options.tasks.add(event.new_task,{silent: true})
     @render()
-    old.unbind "put_success",@on_checkin
+    event.old_task.unbind "drag_completed",@on_checkin
 
 class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
@@ -111,8 +104,7 @@ class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardV
 
   dropped_handle:(from_task)->
     that = this
-    from_task.bind "put_success",(old,task)->
-      console.log "accepted on done"
-      that.options.tasks.add(task,{silent: true})
+    from_task.bind "drag_completed",(event)->
+      that.options.tasks.add(event.new_task,{silent: true})
       that.render()
     from_task.done() 

@@ -9,13 +9,12 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
   initialize:->
     _.bindAll(this, 'helper');
-    _.bindAll(this, 'remove_card');
-    @.model.bind 'put_success',@remove_card
+    _.bindAll(this, 'drag_finished');
+    @.model.bind 'drag_completed',@drag_finished
 
-  remove_card:->
-    console.log "remove card."
+  drag_finished:->
     $(@el).fadeOut()
-    @.model.unbind 'put_success',@remove_card
+    @.model.unbind 'drag_completed',@drag_finished
 
   helper: (event)->
     width = event.currentTarget.offsetWidth
@@ -27,7 +26,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   render: ->
     that = this
     $(@el).html(@template(@model.toJSON()))
-    $(@el).unbind()
+    #$(@el).unbind()
     $(@el).draggable({
         addClasses: false,
         cancel: "a.ui-icon",
@@ -40,13 +39,41 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
 class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCardView
 
-  gravatar_templ: _.template('<div class="list-card-members"><img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>"></div>'),
+  gravatar_templ: _.template('<img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>">'),
+  memebers_templ: _.template('<div class="list-card-members"></div>')
+
+  events:
+    "click .list-card-members img:eq(0)" : "on_pair"
+    "click .list-card-members img:eq(1)" : "on_leave"
 
   initialize:()->
     Miamir.Views.Tasks.TaskCardView.prototype.initialize.call(this)
+    _.bindAll(this, 'on_pair');
+    @model.bind "change",@render,this
+
+  on_pair:()->
+    that = this
+    if _.isNull(@model.get('partner_id'))
+      @model.bind "paired_completed",(event)->
+        that.model.set(event.new_task)
+        that.model.unbind "paired_completed"
+
+      @model.pair()
+
+  on_leave:()->
+    that = this
+    if not _.isNull(@model.get('partner_id'))
+      @model.bind "paired_completed",(event)->
+        that.model.set(event.new_task)
+        that.model.unbind "paired_completed"
+      @model.leave()
 
   render: ->
     Miamir.Views.Tasks.TaskCardView.prototype.render.call(this);
-    @$('#card').append(@gravatar_templ(@model.get('owner')))
+    @$('#card').append(@memebers_templ())
+    @$('.list-card-members').append(@gravatar_templ(@model.get('owner')))
+    if not _.isNull(@model.get('partner_id'))
+      @$('.list-card-members').append(@gravatar_templ(@model.get('partner')))
+
     return this
   
