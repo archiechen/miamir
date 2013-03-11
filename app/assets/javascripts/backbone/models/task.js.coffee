@@ -5,6 +5,7 @@ class Miamir.Models.Task extends Backbone.Model
     title: null
     status: null
     description: null
+    estimate: 0
 
   putjson:(url,data="")->
     that = this

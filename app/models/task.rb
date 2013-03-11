@@ -5,6 +5,12 @@ class Task < ActiveRecord::Base
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
   has_many :durations
 
+  before_save :default_values
+
+  def default_values
+    self.estimate ||= 0
+  end
+
   def checkin(user)
     if user.task
       raise ActiveResource::BadRequest,"Bad Request"
@@ -22,7 +28,7 @@ class Task < ActiveRecord::Base
     self.check_owner(user)
     Task.transaction do
       duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
-      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
+      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) if duration
       self.update_attributes(:owner=>nil,:status=>'Ready')
     end
   end
@@ -39,7 +45,8 @@ class Task < ActiveRecord::Base
   protected
 
   def check_owner(user)
-    if self.owner.id!=user.id
+    
+    if self.owner and self.owner.id!=user.id
       raise ActiveResource::UnauthorizedAccess,"Unauthorized Access"
     end
   end
