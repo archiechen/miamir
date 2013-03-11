@@ -134,6 +134,8 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.7)
+    sqlite3-ruby (1.3.3)
+      sqlite3 (>= 1.3.3)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
       ref
@@ -168,7 +170,7 @@ DEPENDENCIES
   rspec
   rspec-rails
   sass-rails (~> 3.2.3)
-  sqlite3
+  sqlite3-ruby
   therubyracer
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
