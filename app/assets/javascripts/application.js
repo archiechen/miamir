@@ -12,7 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
 //= require twitter/bootstrap
 //= require bootbox
 //= require underscore

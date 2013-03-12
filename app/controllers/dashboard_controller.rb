@@ -1,5 +1,4 @@
 class DashboardController < ApplicationController
-  before_filter :authenticate_user!
 
   def index
     @ready_tasks = Task.where(:status=>'Ready').all

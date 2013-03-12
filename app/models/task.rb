@@ -76,7 +76,7 @@ class Task < ActiveRecord::Base
   protected
 
   def check_owner(user)
-    if not user.is_owner_of(self)
+    if (self.owner) and (not user.is_owner_of(self))
       raise ActiveResource::UnauthorizedAccess,"Unauthorized Access"
     end
   end
