@@ -15,6 +15,14 @@ class User < ActiveRecord::Base
 
   before_create :set_gravatar
 
+  def is_idle()
+    return (self.task.nil?)&&(self.partnership.nil?) 
+  end
+
+  def is_owner_of(task)
+    return (task.owner != nil) && (task.owner.id==self.id)
+  end
+
   private
     def set_gravatar
       self.gravatar = Digest::MD5.hexdigest(self.email)

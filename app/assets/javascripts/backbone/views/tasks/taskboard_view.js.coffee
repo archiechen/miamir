@@ -47,7 +47,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     _.each @options.from_tasks,(from_collection)->
       from_collection.find (from_task)->
         if from_task.cid == cid
-          from_task.bind "put_error",that.on_error
+          from_task.bind "req_error",that.on_error
           that.dropped_handle.call that,from_task
 
   on_error:(xhr,task)->
@@ -61,7 +61,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
         bootbox.confirm estimate_view.render().el, (result) ->
           estimate_view.save() if result
 
-    task.unbind "put_error",@on_error
+    task.unbind "req_error",@on_error
 
 class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>

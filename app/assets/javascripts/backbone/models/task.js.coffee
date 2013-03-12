@@ -16,7 +16,7 @@ class Miamir.Models.Task extends Backbone.Model
       success:(new_task)->
         that.trigger(event,{old_task:that,new_task:new_task})
       error:(xhr, options, message)->
-        that.trigger('put_error',xhr,that)
+        that.trigger('req_error',xhr,that)
 
   checkin:->
     @http_call 'PUT','/tasks/'+@id+"/checkin","drag_completed"

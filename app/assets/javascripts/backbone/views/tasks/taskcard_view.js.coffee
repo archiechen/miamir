@@ -57,8 +57,13 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
       @model.bind "paired_completed",(event)->
         that.model.set(event.new_task)
         that.model.unbind "paired_completed"
-
+      @model.bind "req_error",@on_error
       @model.pair()
+
+  on_error:(xhr,task)->
+    bootbox.classes "alert-box"
+    switch xhr.status
+      when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行代码。"
 
   on_leave:()->
     that = this
