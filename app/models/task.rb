@@ -11,6 +11,7 @@ class Task < ActiveRecord::Base
 
   def default_values
     self.estimate ||= 0
+    self.status ||='New'
   end
 
   def checkin(user)
@@ -41,6 +42,12 @@ class Task < ActiveRecord::Base
       duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
       duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
       self.update_attributes(:owner=>nil,:status=>'Done')
+    end
+  end
+
+  def cancel()
+    Task.transaction do
+      self.update_attributes(:status=>'New')
     end
   end
 

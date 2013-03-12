@@ -3,8 +3,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
-
+    @tasks = Task.where(params[:task])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks }
@@ -102,6 +101,13 @@ class TasksController < ApplicationController
   def done
     @task = Task.find(params[:id])
     @task.done(current_user)
+    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+  end
+
+  # PUT /tasks/1/cancel
+  def cancel
+    @task = Task.find(params[:id])
+    @task.cancel()
     render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
   end
 

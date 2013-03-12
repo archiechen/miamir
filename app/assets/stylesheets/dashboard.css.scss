@@ -13,6 +13,9 @@
   border-radius: 6px;
   padding: 1em;
   margin: 0.4em;
+  min-height: 45em;
+  width: 90%;
+  float: left;
 }
 
 .list-card-members {
@@ -50,7 +53,10 @@
   border: 0px;
   list-style:none;
   margin:0.2em 1em 2em 1em;
-  width:86%;
+  max-width:20.5em;
+  min-width:10.5em;
+  display: list-item;
+  float: left;
 }
 
 .well-taskcard h5{

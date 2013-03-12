@@ -7,6 +7,9 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   className: "span4"
 
   initialize: () =>
+    if not _.isUndefined(@options.className)
+      @$el.removeClass('span4')
+      @$el.addClass(@options.className)
     @options.tasks.bind 'reset', @addAll
     @options.tasks.bind 'add', @addOne 
     @options.tasks.comparator = (task)->
@@ -21,7 +24,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   addOne: (task) =>
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
-    @$(".well-taskboard").append(view.render().el).fadeIn()
+    @$("#list-cards").append(view.render().el).fadeIn()
 
   remove:(event)=>
     @options.tasks.remove event.old_task
@@ -60,6 +63,21 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
 
     task.unbind "put_error",@on_error
 
+class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.TaskboardView
+  initialize: () =>
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    @name = "Backlog"
+    _.bindAll @, "on_cancel"
+
+  dropped_handle:(from_task)->
+    that = this
+    from_task.bind "drag_completed",@on_cancel
+    from_task.cancel()
+
+  on_cancel:(event)->
+    this.options.tasks.add(event.new_task,{silent: true})
+    this.render()
+    event.old_task.unbind "drag_completed",@on_cancel
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>

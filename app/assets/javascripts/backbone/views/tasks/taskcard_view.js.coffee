@@ -3,7 +3,7 @@ Miamir.Views.Tasks ||= {}
 class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   template: JST["backbone/templates/tasks/taskcard"]
 
-  tagName: "div"
+  tagName: "li"
 
   className: "well-taskcard"
 

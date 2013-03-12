@@ -6,6 +6,7 @@ Miamir::Application.routes.draw do
       put :checkin
       put :checkout
       put :done
+      put :cancel
       put :pair
       delete :pair,:action=>"leave"
     end

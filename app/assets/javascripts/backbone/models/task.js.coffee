@@ -36,6 +36,9 @@ class Miamir.Models.Task extends Backbone.Model
   leave:->
     @http_call 'DELETE','/tasks/'+@id+"/pair","paired_completed"
 
+  cancel:->
+    @http_call 'PUT','/tasks/'+@id+"/cancel","drag_completed"
+
 class Miamir.Collections.TasksCollection extends Backbone.Collection
   model: Miamir.Models.Task
   url: '/tasks'
