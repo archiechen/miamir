@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   before_create :set_gravatar
 
-  def is_idle()
+  def idle?
     return (self.task.nil?)&&(self.partnership.nil?) 
   end
 

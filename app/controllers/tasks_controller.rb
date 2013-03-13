@@ -85,22 +85,39 @@ class TasksController < ApplicationController
   def checkin
     @task = Task.find(params[:id])
     @task.estimate = params[:estimate] if params[:estimate]
-    @task.checkin(current_user)
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    begin
+      @task.checkin(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    rescue ActiveRecord::RecordInvalid => invalid
+      if @task.errors.has_key?(:duplicate_task)
+        render json:{},:status => 400
+      elsif
+        @task.errors.has_key?(:estimate)
+        render json:{},:status => 409
+      end
+    end
   end
 
   # PUT /tasks/1/checkout
   def checkout
-    @task = Task.find(params[:id])
-    @task.checkout(current_user)
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    @task = Task.where(:id=>params[:id],:owner_id=>current_user.id).first
+    if @task.blank?
+      render json:{},:status => 401
+    else
+      @task.checkout(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    end
   end
 
   # PUT /tasks/1/done
   def done
-    @task = Task.find(params[:id])
-    @task.done(current_user)
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    @task = Task.where(:id=>params[:id],:owner_id=>current_user.id).first
+    if @task.blank?
+      render json:{},:status => 401
+    else
+      @task.done(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    end
   end
 
   # PUT /tasks/1/cancel

@@ -1,56 +1,64 @@
 #encoding: utf-8
 require 'spec_helper'
-
+require 'pp'
 describe Task do
 
   before do
     @user = FactoryGirl.create(:user)
-    @task = FactoryGirl.create(:task)
-
-    @user_hastask = FactoryGirl.create(:user_hastask)
-    @progress_task = FactoryGirl.create(:progress_task,:owner_id=>2)
-    @ready_task = FactoryGirl.create(:task,:estimate=>0)
+    
+    @ready_task = FactoryGirl.create(:task,:status=>"Ready",:estimate=>10)
+    @progress_task = FactoryGirl.create(:progress_task,:estimate=>2) do |task|
+      task.owner.task = task
+    end
+    @ready_task_no_estimate = FactoryGirl.create(:task,:status=>'Ready',:estimate=>0)
   end
 
   describe "checkin" do
     it "If the current user does not have the processing task, checkin should return true" do
-      @task.checkin(@user).should be_true
-      @task.status.should == "Progress"
-      @task.owner.should == @user
-      @task.should have(1).durations
+      @ready_task.checkin(@user).should be_true
+      @ready_task.status.should == "Progress"
+      @ready_task.owner.should == @user
+      @ready_task.should have(1).durations
     end
 
-    it "If the current user is being processed in the task, checkin should raise BadRequest" do
+    it "如果有处理中的任务，checkin抛出RecordInvalid，包含:duplicate_task错误" do
       expect{
-        @task.checkin(@user_hastask)
-      }.to raise_error(ActiveResource::BadRequest)
-      @task.status.should == "Ready"
-      @task.owner.should == nil
+        @ready_task.checkin(@progress_task.owner).should be_false
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      @ready_task.errors.has_key?(:duplicate_task).should be_true
     end
     
-    it "If the estimate of a task is 0, checkin should raise ResourceConflict" do
+    it "如果estimate=0，checkin抛出RecordInvalid，包含:estimate错误" do
       expect{
-        @ready_task.checkin(@user)
-      }.to raise_error(ActiveResource::ResourceConflict)
-      @task.status.should == "Ready"
-      @task.owner.should == nil
+        @ready_task_no_estimate.checkin(@user)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      @ready_task_no_estimate.errors.has_key?(:estimate).should be_true
+    end
+
+    it "如果有处理中的任务，拖入一个estimate=0的任务，checkin抛出RecordInvalid，包含:duplicate_task错误" do
+      expect{
+        @ready_task_no_estimate.checkin(@progress_task.owner)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      @ready_task_no_estimate.errors.has_key?(:duplicate_task).should be_true
     end
 
   end
 
   describe "checkout" do
     it "如果是自己的任务，checkout应该返回true" do
-      @progress_task.checkout(@user_hastask).should be_true
+      @progress_task.checkout(@progress_task.owner).should be_true
       @progress_task.status.should == "Ready"
       @progress_task.owner.should == nil
+      @progress_task.partner.should == nil
     end
+  end
 
-    it "如果不是自己的任务，checkout应该raise UnauthorizedAccess" do
-      expect{
-        @progress_task.checkout(@user)
-      }.to raise_error(ActiveResource::UnauthorizedAccess)
-      @progress_task.status.should == "Progress"
-      @progress_task.owner.should == @user_hastask
+  describe "done" do
+    it "如果是自己的任务，done应该返回true" do
+      @progress_task.done(@progress_task.owner).should be_true
+      @progress_task.status.should == "Done"
+      @progress_task.owner.should == nil
+      @progress_task.partner.should == nil
     end
   end
 

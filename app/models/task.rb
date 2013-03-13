@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'pp'
 class Task < ActiveRecord::Base
   attr_accessible :partner, :owner,:estimate, :description, :status, :title
 
@@ -9,28 +10,16 @@ class Task < ActiveRecord::Base
 
   before_save :default_values
 
-  def default_values
-    self.estimate ||= 0
-    self.status ||='New'
-  end
+  validate :user_own_only_one_task,:progress_must_be_estimated
 
   def checkin(user)
-    logger.debug user.is_idle()
-    if user.is_idle()
-      if self.estimate == 0
-        raise ActiveResource::ResourceConflict, "Resource Conflict"
-      end
-      Task.transaction do
-        self.durations.create!(:owner=>user)
-        self.update_attributes!(:owner=>user,:status=>'Progress')
-      end
-    else
-      raise ActiveResource::BadRequest,"Bad Request"
+    Task.transaction do
+      self.durations.create!(:owner=>user)
+      self.update_attributes!(:owner=>user,:status=>'Progress')
     end
   end
 
   def checkout(user,status='Ready')
-    self.check_owner(user)
     Task.transaction do
       duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
       duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) if duration
@@ -73,12 +62,22 @@ class Task < ActiveRecord::Base
     end
   end
 
-  protected
-
-  def check_owner(user)
-    if (self.owner) and (not user.is_owner_of(self))
-      raise ActiveResource::UnauthorizedAccess,"Unauthorized Access"
+  private 
+    def default_values
+      self.estimate ||= 0
+      self.status ||='New'
     end
-  end
+
+    def user_own_only_one_task
+      if (status=='Progress') and (!owner.idle?)
+        errors[:duplicate_task]<<"user own only one task"
+      end
+    end
+
+    def progress_must_be_estimated
+      if (status=='Progress') and (estimate == 0)
+        errors[:estimate]<<"progress must be estimated"
+      end
+    end
 
 end
