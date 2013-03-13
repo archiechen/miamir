@@ -6,6 +6,8 @@
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
   <dd><%= @task.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:team) %>:</strong></dt>
+  <dd><%= @task.team.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= @task.description %></dd>
 </dl>

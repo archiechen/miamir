@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
 
   has_one :partnership,:class_name=>"Task",:foreign_key=>"partner_id"
 
+  has_and_belongs_to_many :teams
+
   before_create :set_gravatar
 
   def idle?
