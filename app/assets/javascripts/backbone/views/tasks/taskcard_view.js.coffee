@@ -26,7 +26,6 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   render: ->
     that = this
     $(@el).html(@template(@model.toJSON()))
-    #$(@el).unbind()
     $(@el).draggable({
         addClasses: false,
         cancel: "a.ui-icon",
@@ -35,6 +34,13 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
         helper:@helper,
         cursor: "move"
     })
+    console.log @model.get('scale')
+    switch @model.get('scale')
+      when 1 then @$('#scale').addClass("label-success")
+      when 2 then @$('#scale').addClass("label-info")
+      when 4 then @$('#scale').addClass("label-warning")
+      when 8 then @$('#scale').addClass("label-danger")
+
     return this
 
 class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCardView

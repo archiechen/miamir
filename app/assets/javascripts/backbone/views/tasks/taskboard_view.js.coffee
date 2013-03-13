@@ -77,7 +77,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
           "label" : "$4",
           "class" : "btn-warning",
           "callback": ->
-              scale_view.scale(3)
+              scale_view.scale(4)
         },{
           "label" : "$8",
           "class" : "btn-danger",
