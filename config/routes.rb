@@ -1,4 +1,7 @@
 Miamir::Application.routes.draw do
+  resources :teams
+
+
   devise_for :users
 
   resources :tasks do
@@ -11,6 +14,7 @@ Miamir::Application.routes.draw do
       delete :pair,:action=>"leave"
     end
   end
+  
   resources :users
 
 

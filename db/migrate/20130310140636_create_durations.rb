@@ -7,5 +7,8 @@ class CreateDurations < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :durations, :task_id
+    add_index :durations, :owner_id
   end
 end

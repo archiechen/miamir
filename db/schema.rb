@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130313070100) do
+ActiveRecord::Schema.define(:version => 20130313092401) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes"
@@ -22,16 +22,32 @@ ActiveRecord::Schema.define(:version => 20130313070100) do
     t.integer  "partner_id"
   end
 
+  add_index "durations", ["owner_id"], :name => "index_durations_on_owner_id"
+  add_index "durations", ["partner_id"], :name => "index_durations_on_partner_id"
+  add_index "durations", ["task_id"], :name => "index_durations_on_task_id"
+
   create_table "tasks", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "status"
     t.integer  "owner_id"
-    t.integer  "estimate"
+    t.integer  "estimate",    :default => 0
     t.integer  "partner_id"
-    t.integer  "scale"
+    t.integer  "scale",       :default => 0
+    t.integer  "team_id"
+  end
+
+  add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
+  add_index "tasks", ["partner_id"], :name => "index_tasks_on_partner_id"
+  add_index "tasks", ["status"], :name => "index_tasks_on_status"
+  add_index "tasks", ["team_id"], :name => "index_tasks_on_team_id"
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

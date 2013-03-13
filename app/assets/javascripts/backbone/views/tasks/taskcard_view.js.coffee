@@ -34,7 +34,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
         helper:@helper,
         cursor: "move"
     })
-    console.log @model.get('scale')
+    
     switch @model.get('scale')
       when 1 then @$('#scale').addClass("label-success")
       when 2 then @$('#scale').addClass("label-info")
