@@ -1,7 +1,6 @@
 #encoding: utf-8
-require 'pp'
 class Task < ActiveRecord::Base
-  attr_accessible :partner, :owner, :scale, :estimate, :description, :status, :title
+  attr_accessible :team_id, :partner, :owner, :scale, :estimate, :description, :status, :title
 
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
   belongs_to :partner, :class_name=>"User", :foreign_key=>"partner_id"
