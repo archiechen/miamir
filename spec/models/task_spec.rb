@@ -13,15 +13,15 @@ describe Task do
       task.owner.task = task
     end
 
-    @paired_task = FactoryGirl.create(:paired_task,:estimate=>2) do |task|
+    @paired_task = FactoryGirl.create(:paired_task,:estimate=>2,:scale=>1) do |task|
       task.owner.task = task
       task.partner.partnership = task
     end
 
-    @progress_task_other = FactoryGirl.create(:progress_task,:estimate=>2) do |task|
+    @progress_task_other = FactoryGirl.create(:progress_task,:estimate=>2,:scale=>1) do |task|
       task.owner.task = task
     end
-    @ready_task_no_estimate = FactoryGirl.create(:task,:status=>'Ready',:estimate=>0)
+    @ready_task_no_estimate = FactoryGirl.create(:task,:status=>'Ready',:estimate=>0,:scale=>1)
   end
 
   describe "checkin" do

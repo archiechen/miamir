@@ -2,6 +2,10 @@
 
 FactoryGirl.define do
   factory :team do
-    name "MyString"
+    name "Miami"
+
+    factory :team_with_members do
+      members {FactoryGirl.create_list(:user,2)}
+    end
   end
 end
