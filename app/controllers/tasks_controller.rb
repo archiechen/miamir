@@ -130,15 +130,25 @@ class TasksController < ApplicationController
   # PUT /tasks/1/pair
   def pair
     @task = Task.find(params[:id])
-    @task.pair(current_user)
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+    begin
+      @task.pair(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+    rescue ActiveRecord::RecordInvalid => invalid
+      if @task.errors.has_key?(:duplicate_task)
+        render json:{},:status => 400
+      end
+    end
   end
 
   # DELETE /tasks/1/pair
   def leave
-    @task = Task.find(params[:id])
-    @task.leave(current_user)
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+    @task = Task.where(:id=>params[:id],:partner_id =>current_user.id).first
+    if @task.blank?
+      render json:{},:status => 401
+    else
+      @task.leave(current_user)
+      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+    end
   end
 
 end

@@ -38,27 +38,20 @@ class Task < ActiveRecord::Base
   end
 
   def pair(user)
-    if not user.is_owner_of(self)
-      if not user.is_idle()
-        raise ActiveResource::BadRequest,"Bad Request"
-      end
-      Task.transaction do
-        duration = self.durations.where(:owner_id=>self.owner.id,:minutes=>nil).first
-        duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
-        self.durations.create!(:owner=>self.owner,:partner=>user)
-        self.update_attributes(:partner=>user)
-      end
+    Task.transaction do
+      duration = self.durations.where(:owner_id=>self.owner.id,:minutes=>nil).first
+      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) 
+      self.durations.create!(:owner=>self.owner,:partner=>user)
+      self.update_attributes!(:partner=>user)
     end
   end
 
   def leave(user)
-    if self.partner==user
-      Task.transaction do
-        duration = self.durations.where(:partner_id=>user.id,:minutes=>nil).first
-        duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
-        self.durations.create!(:owner=>self.owner,:partner=>nil)
-        self.update_attributes(:partner=>nil)
-      end
+    Task.transaction do
+      duration = self.durations.where(:partner_id=>user.id,:minutes=>nil).first
+      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
+      self.durations.create!(:owner=>self.owner,:partner=>nil)
+      self.update_attributes(:partner=>nil)
     end
   end
 
@@ -69,8 +62,14 @@ class Task < ActiveRecord::Base
     end
 
     def user_own_only_one_task
-      if (status=='Progress') and (!owner.idle?)
-        errors[:duplicate_task]<<"user own only one task"
+      if partner
+        if (status=='Progress') and (!partner.idle?)
+          errors[:duplicate_task]<<"user own only one task"
+        end
+      else
+        if (status=='Progress') and (!owner.idle?) and (owner.task!=self)
+          errors[:duplicate_task]<<"user own only one task"
+        end
       end
     end
 
