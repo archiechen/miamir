@@ -6,8 +6,10 @@ describe Task do
   before do
     @user = FactoryGirl.create(:user)
 
-    @ready_task = FactoryGirl.create(:task,:status=>"Ready",:estimate=>10)
-    @progress_task = FactoryGirl.create(:progress_task,:estimate=>2) do |task|
+    @ready_task = FactoryGirl.create(:task,:status=>"Ready",:estimate=>10,:scale=>5)
+    @new_task = FactoryGirl.create(:task,:status=>"New",:scale=>10)
+    @new_task_no_scale = FactoryGirl.create(:task,:status=>"New",:scale=>0)
+    @progress_task = FactoryGirl.create(:progress_task,:estimate=>2,:scale=>5) do |task|
       task.owner.task = task
     end
 
@@ -57,8 +59,22 @@ describe Task do
     it "如果是自己的任务，checkout应该返回true" do
       @progress_task.checkout(@progress_task.owner).should be_true
       @progress_task.status.should == "Ready"
-      @progress_task.owner.should == nil
-      @progress_task.partner.should == nil
+      @progress_task.owner.should  be_nil
+      @progress_task.partner.should be_nil
+    end
+
+    it "如果任务的Scale不为0，checkout应该返回true" do
+      @new_task.checkout(@progress_task.owner).should be_true
+      @new_task.status.should == "Ready"
+      @new_task.owner.should  be_nil
+      @new_task.partner.should be_nil
+    end
+
+    it "如果任务的Scale=0，checkout抛出RecordInvalid，包含:scale错误" do
+      expect{
+        @new_task_no_scale.checkout(@user)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      @new_task_no_scale.errors.has_key?(:scale).should be_true
     end
   end
 

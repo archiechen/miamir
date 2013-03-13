@@ -60,6 +60,32 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
         estimate_view = new Miamir.Views.Tasks.EstimateView({model:task})
         bootbox.confirm estimate_view.render().el, (result) ->
           estimate_view.save() if result
+      when 412
+        bootbox.classes "prompt-box"
+        scale_view = new Miamir.Views.Tasks.ScaleView({model:task})
+        bootbox.dialog scale_view.render().el,[{
+          "label" : "$1",
+          "class" : "btn-success",
+          "callback": ->
+              scale_view.scale(1)
+        },{
+          "label" : "$2",
+          "class" : "btn-info",
+          "callback": ->
+              scale_view.scale(2)
+        },{
+          "label" : "$4",
+          "class" : "btn-warning",
+          "callback": ->
+              scale_view.scale(3)
+        },{
+          "label" : "$8",
+          "class" : "btn-danger",
+          "callback": ->
+              scale_view.scale(8)
+        }],
+        {onEscape:true}
+
 
     task.unbind "req_error",@on_error
 

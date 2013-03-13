@@ -100,12 +100,19 @@ class TasksController < ApplicationController
 
   # PUT /tasks/1/checkout
   def checkout
-    @task = Task.where(:id=>params[:id],:owner_id=>current_user.id).first
-    if @task.blank?
+    @task = Task.find(params[:id])
+    if !@task.owner.blank? and @task.owner != current_user
       render json:{},:status => 401
     else
-      @task.checkout(current_user)
-      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+      begin
+        @task.scale = params[:scale] if params[:scale]
+        @task.checkout(current_user)
+        render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+      rescue ActiveRecord::RecordInvalid => invalid
+        if @task.errors.has_key?(:scale)
+          render json:{},:status => 412
+        end
+      end
     end
   end
 

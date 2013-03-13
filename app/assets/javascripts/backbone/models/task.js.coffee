@@ -30,6 +30,9 @@ class Miamir.Models.Task extends Backbone.Model
   estimate:(value)->
     @http_call 'PUT','/tasks/'+@id+"/checkin","drag_completed",{estimate:value}
 
+  scale:(value)->
+    @http_call 'PUT','/tasks/'+@id+"/checkout","drag_completed",{scale:value}
+
   pair:->
     @http_call 'PUT','/tasks/'+@id+"/pair","paired_completed"
 

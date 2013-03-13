@@ -1,7 +1,7 @@
 #encoding: utf-8
 require 'pp'
 class Task < ActiveRecord::Base
-  attr_accessible :partner, :owner,:estimate, :description, :status, :title
+  attr_accessible :partner, :owner, :scale, :estimate, :description, :status, :title
 
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
   belongs_to :partner, :class_name=>"User", :foreign_key=>"partner_id"
@@ -10,7 +10,7 @@ class Task < ActiveRecord::Base
 
   before_save :default_values
 
-  validate :user_own_only_one_task,:progress_must_be_estimated
+  validate :user_own_only_one_task,:progress_must_be_estimated,:ready_must_has_scale
 
   def checkin(user)
     Task.transaction do
@@ -22,8 +22,8 @@ class Task < ActiveRecord::Base
   def checkout(user,status='Ready')
     Task.transaction do
       duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
-      duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) if duration
-      self.update_attributes(:owner=>nil,:partner=>nil,:status=>status)
+      duration.update_attributes!(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) if duration
+      self.update_attributes!(:owner=>nil,:partner=>nil,:status=>status)
     end
   end
 
@@ -33,7 +33,7 @@ class Task < ActiveRecord::Base
 
   def cancel()
     Task.transaction do
-      self.update_attributes(:status=>'New')
+      self.update_attributes!(:status=>'New')
     end
   end
 
@@ -58,6 +58,7 @@ class Task < ActiveRecord::Base
   private 
     def default_values
       self.estimate ||= 0
+      self.scale ||= 0
       self.status ||='New'
     end
 
@@ -76,6 +77,12 @@ class Task < ActiveRecord::Base
     def progress_must_be_estimated
       if (status=='Progress') and (estimate == 0)
         errors[:estimate]<<"progress must be estimated"
+      end
+    end
+
+    def ready_must_has_scale
+      if (status=='Ready') and (scale == 0)
+        errors[:scale]<<"progress must be scale"
       end
     end
 

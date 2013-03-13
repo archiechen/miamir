@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311101302) do
+ActiveRecord::Schema.define(:version => 20130313070100) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20130311101302) do
     t.integer  "owner_id"
     t.integer  "estimate"
     t.integer  "partner_id"
+    t.integer  "scale"
   end
 
   create_table "users", :force => true do |t|
