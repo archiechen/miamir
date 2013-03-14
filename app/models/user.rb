@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
 
   before_create :set_gravatar
 
+  def short_name
+    self.email.split("@")[0]
+  end
+
   def idle?
     return (self.task.nil?)&&(self.partnership.nil?) 
   end

@@ -1,6 +1,5 @@
 #encoding: utf-8
 require 'spec_helper'
-require 'pp'
 describe Task do
 
   before do

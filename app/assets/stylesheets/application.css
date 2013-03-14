@@ -10,6 +10,5 @@
  *
  *= require_self
  *= require jquery.ui.core
- *= require jquery.ui.base
  *= require_tree .
  */

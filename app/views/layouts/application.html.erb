@@ -47,19 +47,32 @@
           </a>
           <a class="brand" href="#">Miamir</a>
           <div class="container-fluid nav-collapse">
-            <ul class="nav">
+            <ul id="main-nav" class="nav">
               <li><%= link_to "Dashboard", "/#index"  %></li>
               <li><%= link_to "Planning", "/#planning"  %></li>
               <li><%= link_to "Burning", "/burning"  %></li>
               <li><%= link_to "Review", "/review"  %></li>
-              <% if current_user %>
-              <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %> </li>
-              <li><%= link_to('Change Password', edit_registration_path(:user)) %></li>
-              <% else %>
+            </ul>
+      
+            <% if current_user %>
+            <ul class="nav pull-right">
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.short_name%><b class="caret"></b></a>
+                <ul id="user_menu" class="dropdown-menu">
+                    <li class="nav-header">Teams</li>
+                    
+                    <li class="divider"></li>
+                    <li><%= link_to(raw('<i class="icon-cog"></i>Change Password'), edit_registration_path(:user)) %></li>
+                    <li><%= link_to(raw('<i class="icon-off"></i> Logout'), destroy_user_session_path, :method => :delete) %> </li>
+                </ul>
+              </li>
+            </ul>
+            <% else %>
+            <ul class="nav pull-right">
               <li><%= link_to('Register', new_registration_path(:user)) %> </li>
               <li><%= link_to('Login', new_session_path(:user)) %></li>
-              <% end %>
             </ul>
+            <% end %>
+         
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -76,8 +89,5 @@
       </footer>
 
     </div> <!-- /container -->
-
-    <%= javascript_include_tag "application" %>
-
   </body>
 </html>

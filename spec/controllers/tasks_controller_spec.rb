@@ -74,5 +74,4 @@ describe TasksController do
       assert_response 401
     end
   end
-
 end
