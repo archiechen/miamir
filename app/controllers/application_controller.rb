@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   private
 
     def set_default_team
-      if session[:current_team].blank?
+      if current_user and session[:current_team].blank?
         session[:current_team] = current_user.teams.first
       end
       @current_team = session[:current_team]
