@@ -1,14 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!,:set_default_team
 
-  rescue_from(ActiveResource::BadRequest){
-    render json:{},:status => 400
-  }
-  rescue_from(ActiveResource::UnauthorizedAccess){
-    render json:{},:status => 401
-  }
-  rescue_from(ActiveResource::ResourceConflict){
-    render json:{},:status => 409
-  }
+  private
+
+    def set_default_team
+      if session[:current_team].blank?
+        session[:current_team] = current_user.teams.first
+      end
+      @current_team = session[:current_team]
+    end
 end

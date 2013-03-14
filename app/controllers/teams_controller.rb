@@ -80,4 +80,11 @@ class TeamsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # PUT /teams/1/current
+  def current
+    @team = Team.find(params[:id])
+    session[:current_team] = @team
+    render json:{},:status => 200
+  end
 end

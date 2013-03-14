@@ -17,8 +17,10 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     _.bindAll @, "drop"
     _.bindAll @, "remove"
     _.bindAll @, "on_error"
+    _.bindAll @, "fetch"
     
   addAll: () =>
+    @$("#list-cards").empty()
     @options.tasks.each(@addOne)
 
   addOne: (task) =>
@@ -29,6 +31,9 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   remove:(event)=>
     @options.tasks.remove event.old_task
     event.old_task.unbind 'drag_completed',@remove
+
+  fetch:(team_id)->
+    @options.tasks.fetch {data:{task:{status:@name,team_id:team_id}}}
 
   render: () =>
     $(@el).html(@template(name:@name))
