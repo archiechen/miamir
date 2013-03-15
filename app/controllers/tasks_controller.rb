@@ -5,7 +5,7 @@ class TasksController < ApplicationController
     @tasks = Task.where(params[:task])
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks }
+      format.json { render json: @tasks.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}}) }
     end
   end
 

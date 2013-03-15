@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="span4">
+    <%if (partner_id!=null){%>
+    <img style="float:left;margin-right:0.2em;" src="http://gravatar.com/avatar/<%=partner.gravatar%>?s=20&amp;d=retro&amp;r=x" title="<%=partner.email%>"> 
+    <%}else{%>
+    <div style="float:left;height:20px;width:20px;margin-right:0.2em"></div>
+    <%}%>
+    <img style="float:left;margin-right:0.2em;" src="http://gravatar.com/avatar/<%=owner.gravatar%>?s=20&amp;d=retro&amp;r=x" title="<%=owner.email%>"> 
+    <div class="progress" style="margin-bottom:0.4em;">
+        <div class="bar" style="width:<%=minutes*100/480%>%;" title="start@<%=created_at%>"><%=minutes%>Minutes</div>
+    </div>
+  </div>
+</div>

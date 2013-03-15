@@ -9,6 +9,7 @@ Miamir::Application.routes.draw do
   devise_for :users
 
   resources :tasks do
+    resources :durations,:only => :index 
     member do
       put :checkin
       put :checkout

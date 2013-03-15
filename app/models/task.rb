@@ -64,7 +64,7 @@ class Task < ActiveRecord::Base
 
     def user_own_only_one_task
       if partner
-        if (status=='Progress') and (!partner.idle?)
+        if (status=='Progress') and (!partner.idle?) and (partner.partnership!=self)
           errors[:duplicate_task]<<"user own only one task"
         end
       else

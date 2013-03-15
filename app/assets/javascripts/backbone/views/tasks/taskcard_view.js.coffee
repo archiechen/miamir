@@ -8,7 +8,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   className: "well-taskcard"
 
   events:
-    "click .task-card" : "show"
+    "click .task-card .title" : "show"
 
   initialize:->
     _.bindAll(this, 'helper');
@@ -30,6 +30,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
   show:()->
     show_view = new Miamir.Views.Tasks.ShowView({model:@model})
+    bootbox.classes "show-box"
     bootbox.dialog show_view.render().el,{},{no_footer:true,onEscape:true}
 
   render: ->
@@ -59,11 +60,11 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
   events:
     "click .list-card-members img:eq(0)" : "on_pair"
     "click .list-card-members img:eq(1)" : "on_leave"
+    "click .task-card .title" : "show"
 
   initialize:()->
     Miamir.Views.Tasks.TaskCardView.prototype.initialize.call(this)
     _.bindAll(this, 'on_pair');
-    @model.bind "change",@render,this
 
   on_pair:()->
     that = this
