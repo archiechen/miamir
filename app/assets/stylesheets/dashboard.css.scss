@@ -5,6 +5,56 @@
 .alert-box{width:20em;margin-left:-180px;}
 .prompt-box{width:40em;margin-left:-260px;}
 
+#task-title{font-size: 18px;margin-bottom: 1em;}
+
+.edit-title{
+  background: rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.15);
+  border-color: #aaa;
+  height: 64px;
+  resize: vertical;
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 3px;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  min-height: 30px;
+  padding: 6px;
+}
+
+.edit-description{
+  background: rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.15);
+  border-color: #aaa;
+  height: 128px;
+  resize: vertical;
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: 3px;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  min-height: 30px;
+  padding: 6px;
+}
+
 .taskboard-header { border-bottom: 1px solid #eeeeee; margin: 5px 0 10px; padding-bottom: 9px; }
 
 .well-taskboard {

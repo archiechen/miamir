@@ -7,10 +7,15 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
 
   className: "well-taskcard"
 
+  events:
+    "click .task-card" : "show"
+
   initialize:->
     _.bindAll(this, 'helper');
+    _.bindAll(this, 'show');
     _.bindAll(this, 'drag_finished');
-    @.model.bind 'drag_completed',@drag_finished
+    @model.bind 'drag_completed',@drag_finished
+    @model.on 'change',@render,this
 
   drag_finished:->
     $(@el).fadeOut()
@@ -23,8 +28,11 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     drag.attr('data-cid',@model.cid)
     return drag
 
+  show:()->
+    show_view = new Miamir.Views.Tasks.ShowView({model:@model})
+    bootbox.dialog show_view.render().el,{},{no_footer:true,onEscape:true}
+
   render: ->
-    that = this
     $(@el).html(@template(@model.toJSON()))
     $(@el).draggable({
         addClasses: false,

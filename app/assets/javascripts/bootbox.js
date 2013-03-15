@@ -344,8 +344,9 @@ var bootbox = window.bootbox || (function(document, $) {
                 href = _defaultHref;
             }
 
-            buttons = "<a data-handler='"+i+"' class='btn "+_class+"' href='" + href + "'>"+icon+""+label+"</a>" + buttons;
-
+            if (!options.no_footer){
+                buttons = "<a data-handler='"+i+"' class='btn "+_class+"' href='" + href + "'>"+icon+""+label+"</a>" + buttons;
+            }
             callbacks[i] = callback;
         }
 
