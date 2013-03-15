@@ -11,7 +11,6 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
     @model.once 'change',@render,this
     @durations = new Miamir.Collections.DurationsCollection(task_id:@model.get('id'))
     @durations.on "reset",@addAllDurations,this
-    @durations.fetch()
 
   addDuration:(duration)->
     @$('#durations').append(@duration_templ(duration.toJSON())) if duration.get('minutes')
@@ -19,8 +18,8 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
   addAllDurations:()->
     @durations.each(@addDuration)
 
-
   render: ->
+    @durations.fetch()
     $.fn.editableform.template = @edit_title_templ()
     $.fn.editableform.buttons = @edit_buttons_templ()
     that = this
@@ -32,6 +31,9 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
     @$('#task-title').on 'save',(e, params)->
       that.model.set('title',params.newValue)
       that.model.saveChanges()
+
+    @$('#task-title').on 'shown',()->
+      $('.editable-inline').css('width',"100%")
 
     @$('#task-title').on 'click',(e)->
       e.stopPropagation();
@@ -46,9 +48,14 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
       that.model.set('description',params.newValue)
       that.model.saveChanges()
 
+    @$('#task-description').on 'shown',()->
+      $('.editable-inline').css('width',"100%")
+      
+
     @$('#task-description').on 'click',(e)->
       e.stopPropagation();
       e.preventDefault();
       $('#task-description').editable('toggle');
-      
+
+    
     return this
