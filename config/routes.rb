@@ -1,5 +1,6 @@
 Miamir::Application.routes.draw do
   resources :teams do
+    resources :members,:only => [:index, :create, :destroy] 
     member do
       put :current
     end
