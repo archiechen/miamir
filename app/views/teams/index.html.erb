@@ -39,3 +39,9 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_team_path,
             :class => 'btn btn-primary' %>
+
+<script type="text/javascript">
+  $(function() {
+    team_selector = new Miamir.Views.Teams.SelectorView({taskboards:[]});
+  });
+</script>
