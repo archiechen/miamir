@@ -28,10 +28,10 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     drag.attr('data-cid',@model.cid)
     return drag
 
-  show:()->
+  show:->
+    console.log 'show task'
     show_view = new Miamir.Views.Tasks.ShowView({model:@model})
-    bootbox.classes "show-box"
-    bootbox.dialog show_view.render().el,{},{no_footer:true,onEscape:true}
+    show_view.show()
 
   render: ->
     $(@el).html(@template(@model.toJSON()))

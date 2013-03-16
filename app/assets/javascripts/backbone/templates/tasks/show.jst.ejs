@@ -7,19 +7,39 @@
     <div id="durations" class="row-fluid"></div>
   </div>
   <div class="span4">
-    <div class="sidebar-nav">
-      <div class="well" style="width:100%; padding: 8px 0;">
-        <ul class="nav nav-list"> 
-          <li class="nav-header">Main</li>        
-          <li class="active"><a href="index"><i class="icon-home"></i> Dashboard</a></li>
-          <li><a href="#"><i class="icon-edit"></i> Add Blog Post</a></li>
-              <li><a href="#"><i class="icon-calendar"></i> Calendar</a></li>
-          <li><a href="#"><i class="icon-user"></i> Members</a></li>
-          <li><a href="#"><i class="icon-comment"></i> Comments</a></li>
-          <li><a href="#"><i class="icon-picture"></i> Gallery</a></li>
-        </ul>
-      </div>
+    <div class="well" style="width:100%; padding: 1em 0;">
+      <dl class="dl-horizontal">
+        <dt style="width:100px">Scale</dt>
+        <dd style="margin-left:120px">
+          <div class="label"> 
+            <span>$<%=scale%></span>  
+          </div>
+        </dd>
+        <dt style="width:100px">Estimate</dt>
+        <dd style="margin-left:120px">
+          <div class="label label-info"> 
+            <span><%=estimate%>H</span>  
+          </div>
+        </dd>
+      </dl>
     </div>
   </div>
 </div>
+<div class="row-fluid">
 
+      <div class="span12">
+        <p></p>
+        <p>
+          <%if (partner_id!=null){%>
+          <i class="icon-user"></i> by <a href="#"><%=owner.short_name%>&<%=partner.short_name%></a> 
+          |
+          <%}else{%>
+          <%if (owner_id!=null){%>
+          <i class="icon-user"></i> by <a href="#"><%=owner.short_name%></a> 
+          |
+          <%}%> 
+          <%}%><i class="icon-calendar"></i> <%=created_at%>
+          | <i class="icon-time"></i> <%=consuming%> Minutes
+        </p>
+      </div>
+    

@@ -12,6 +12,18 @@ class Task < ActiveRecord::Base
 
   validate :user_own_only_one_task,:progress_must_be_estimated,:ready_must_has_scale
 
+  def serializable_hash(options={})
+    options = { 
+      :methods => [:consuming],
+      :include => {:owner=> {:methods => [:short_name],:except => [:created_at, :updated_at]},:partner => { :methods => [:short_name],:except => [:created_at, :updated_at]}}
+    }.update(options)
+    super(options)
+  end
+
+  def consuming()
+    self.durations.inject(0) {|sum, n| sum + n[:minutes] }
+  end
+
   def checkin(user)
     Task.transaction do
       self.durations.create!(:owner=>user)
@@ -21,7 +33,7 @@ class Task < ActiveRecord::Base
 
   def checkout(user,status='Ready')
     Task.transaction do
-      duration = self.durations.where(:owner_id=>user.id,:minutes=>nil).first
+      duration = self.durations.where(:owner_id=>user.id,:minutes=>0).first
       duration.update_attributes!(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) if duration
       self.update_attributes!(:owner=>nil,:partner=>nil,:status=>status)
     end
@@ -39,7 +51,7 @@ class Task < ActiveRecord::Base
 
   def pair(user)
     Task.transaction do
-      duration = self.durations.where(:owner_id=>self.owner.id,:minutes=>nil).first
+      duration = self.durations.where(:owner_id=>self.owner.id,:minutes=>0).first
       duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil) 
       self.durations.create!(:owner=>self.owner,:partner=>user)
       self.update_attributes!(:partner=>user)
@@ -48,7 +60,7 @@ class Task < ActiveRecord::Base
 
   def leave(user)
     Task.transaction do
-      duration = self.durations.where(:partner_id=>user.id,:minutes=>nil).first
+      duration = self.durations.where(:partner_id=>user.id,:minutes=>0).first
       duration.update_attributes(:minutes=>((Time.now-duration.created_at)/1.minute).ceil)
       self.durations.create!(:owner=>self.owner,:partner=>nil)
       self.update_attributes(:partner=>nil)

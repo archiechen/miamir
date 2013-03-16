@@ -1,16 +1,21 @@
 Miamir.Views.Tasks ||= {}
 
 class Miamir.Views.Tasks.ShowView extends Backbone.View
+  el:'#modalForm'
+
   template: JST["backbone/templates/tasks/show"]
   edit_title_templ: JST["backbone/templates/tasks/edit-title"]
   edit_buttons_templ: JST["backbone/templates/tasks/edit-buttons"]
   duration_templ: JST["backbone/templates/tasks/duration"]
 
   initialize:->
-    _.bindAll(this, 'addDuration');
+    @$el.addClass('task-detail')
+    _.bindAll(this, 'addDuration')
+    _.bindAll(this, 'show')
     @model.once 'change',@render,this
     @durations = new Miamir.Collections.DurationsCollection(task_id:@model.get('id'))
-    @durations.on "reset",@addAllDurations,this
+    @durations.on "reset",@addAllDurations,
+    @render()
 
   addDuration:(duration)->
     @$('#durations').append(@duration_templ(duration.toJSON())) if duration.get('minutes')
@@ -18,8 +23,11 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
   addAllDurations:()->
     @durations.each(@addDuration)
 
+  show:->
+      @$el.modal('show');
+
   render: ->
-    @durations.fetch()
+    #@durations.fetch()
     $.fn.editableform.template = @edit_title_templ()
     $.fn.editableform.buttons = @edit_buttons_templ()
     that = this

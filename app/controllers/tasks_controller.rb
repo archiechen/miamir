@@ -5,7 +5,7 @@ class TasksController < ApplicationController
     @tasks = Task.where(params[:task])
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @tasks.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}}) }
+      format.json { render json: @tasks }
     end
   end
 
@@ -87,7 +87,7 @@ class TasksController < ApplicationController
     @task.estimate = params[:estimate] if params[:estimate]
     begin
       @task.checkin(current_user)
-      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+      render json: @task
     rescue ActiveRecord::RecordInvalid => invalid
       if @task.errors.has_key?(:duplicate_task)
         render json:{},:status => 400
@@ -107,7 +107,7 @@ class TasksController < ApplicationController
       begin
         @task.scale = params[:scale] if params[:scale]
         @task.checkout(current_user)
-        render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+        render json: @task
       rescue ActiveRecord::RecordInvalid => invalid
         if @task.errors.has_key?(:scale)
           render json:{},:status => 412
@@ -123,7 +123,7 @@ class TasksController < ApplicationController
       render json:{},:status => 401
     else
       @task.done(current_user)
-      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+      render json: @task
     end
   end
 
@@ -131,7 +131,7 @@ class TasksController < ApplicationController
   def cancel
     @task = Task.find(params[:id])
     @task.cancel()
-    render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]}})
+    render json: @task
   end
 
   # PUT /tasks/1/pair
@@ -139,7 +139,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     begin
       @task.pair(current_user)
-      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+      render json: @task
     rescue ActiveRecord::RecordInvalid => invalid
       if @task.errors.has_key?(:duplicate_task)
         render json:{},:status => 400
@@ -154,7 +154,7 @@ class TasksController < ApplicationController
       render json:{},:status => 401
     else
       @task.leave(current_user)
-      render json: @task.to_json(:include => {:owner=> { :except => [:created_at, :updated_at]},:partner => { :except => [:created_at, :updated_at]}})
+      render json: @task
     end
   end
 
