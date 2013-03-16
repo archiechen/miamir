@@ -6,24 +6,21 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   
   className: "span4"
 
-  init: () =>
+  initialize: () ->
     if not _.isUndefined(@options.className)
       @$el.removeClass('span4')
       @$el.addClass(@options.className)
-    @options.tasks.bind 'reset', @addAll
-    @options.tasks.bind 'add', @addOne 
+    @options.tasks.bind('reset', @addAll)
+    @options.tasks.bind('add', @addOne) 
     @options.tasks.comparator = (task)->
       return task.get 'id'
-    _.bindAll @, "drop"
-    _.bindAll @, "remove"
-    _.bindAll @, "on_error"
-    _.bindAll @, "fetch"
+    _.bindAll @, "addOne"
     
   addAll: () =>
     @$("#list-cards").empty()
     @options.tasks.each(@addOne)
 
-  addOne: (task) =>
+  addOne: (task) ->
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
     @$("#list-cards").append(view.render().el).fadeIn()
@@ -32,7 +29,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.remove event.old_task
     event.old_task.unbind 'drag_completed',@remove
 
-  fetch:(team_id)->
+  fetch:(team_id)=>
     @options.tasks.fetch {data:{task:{status:@name,team_id:team_id}}}
 
   render: () =>
@@ -46,7 +43,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     })
     return this
 
-  drop: (event,ui)->
+  drop: (event,ui)=>
     that = this
     cid = $(ui.helper).attr('data-cid')
     _.each @options.from_tasks,(from_collection)->
@@ -55,7 +52,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
           from_task.bind "req_error",that.on_error
           that.dropped_handle.call that,from_task
 
-  on_error:(xhr,task)->
+  on_error:(xhr,task)=>
     bootbox.classes "alert-box"
     switch xhr.status
       when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行代码。"
@@ -95,64 +92,61 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     task.unbind "req_error",@on_error
 
 class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.TaskboardView
-  initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
+  initialize: () ->
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Backlog"
-    _.bindAll @, "on_cancel"
 
-  dropped_handle:(from_task)->
+  dropped_handle:(from_task)=>
     that = this
     from_task.bind "drag_completed",@on_cancel
     from_task.cancel()
 
-  on_cancel:(event)->
+  on_cancel:(event)=>
     this.options.tasks.add(event.new_task,{silent: true})
     this.render()
     event.old_task.unbind "drag_completed",@on_cancel
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
-  initialize: () =>
-    console.log 'shi!'
-    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
+  initialize: () ->
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Ready"
-    _.bindAll @, "on_checkout"
 
-  dropped_handle:(from_task)->
+  dropped_handle:(from_task)=>
     that = this
     from_task.bind "drag_completed",@on_checkout
     from_task.checkout()
 
-  on_checkout:(event)->
+  on_checkout:(event)=>
     this.options.tasks.add(event.new_task,{silent: true})
     this.render()
     event.old_task.unbind "drag_completed",@on_checkout
 
 class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
-  initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
+  initialize: () ->
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Progress"
-    _.bindAll @, "on_checkin"
+
   #override add one
   addOne: (task) =>
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.ProgressTaskCardView({model : task})
-    @$(".well-taskboard").append(view.render().el).fadeIn()
+    @$("#list-cards").append(view.render().el).fadeIn()
 
-  dropped_handle:(from_task)->
+  dropped_handle:(from_task)=>
     from_task.bind "drag_completed",@on_checkin
     from_task.checkin()
 
-  on_checkin:(event)->
+  on_checkin:(event)=>
     @options.tasks.add(event.new_task,{silent: true})
     @render()
     event.old_task.unbind "drag_completed",@on_checkin
 
 class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardView
-  initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
+  initialize: () ->
+    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Done"
 
-  dropped_handle:(from_task)->
+  dropped_handle:(from_task)=>
     that = this
     from_task.bind "drag_completed",(event)->
       that.options.tasks.add(event.new_task,{silent: true})

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authenticate_user!,:set_default_team
+  before_filter :set_default_team
 
   private
 

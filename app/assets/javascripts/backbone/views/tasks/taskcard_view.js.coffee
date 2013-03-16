@@ -11,29 +11,26 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     "click .task-card .title" : "show"
 
   initialize:->
-    _.bindAll(this, 'helper');
-    _.bindAll(this, 'show');
-    _.bindAll(this, 'drag_finished');
     @model.bind 'drag_completed',@drag_finished
     @model.on 'change',@render,this
 
-  drag_finished:->
+  drag_finished:=>
     $(@el).fadeOut()
     @.model.unbind 'drag_completed',@drag_finished
 
-  helper: (event)->
+  helper: (event)=>
     width = event.currentTarget.offsetWidth
     drag = $(@el).clone()
     drag.css('width',width+"px")
     drag.attr('data-cid',@model.cid)
     return drag
 
-  show:->
-    console.log 'show task'
+  show:=>
     show_view = new Miamir.Views.Tasks.ShowView({model:@model})
     show_view.show()
 
   render: ->
+    console.log "render card"
     $(@el).html(@template(@model.toJSON()))
     $(@el).draggable({
         addClasses: false,
@@ -64,9 +61,8 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
 
   initialize:()->
     Miamir.Views.Tasks.TaskCardView.prototype.initialize.call(this)
-    _.bindAll(this, 'on_pair');
-
-  on_pair:()->
+ 
+  on_pair:()=>
     that = this
     if _.isNull(@model.get('partner_id'))
       @model.bind "paired_completed",(event)->
@@ -75,12 +71,12 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
       @model.bind "req_error",@on_error
       @model.pair()
 
-  on_error:(xhr,task)->
+  on_error:(xhr,task)=>
     bootbox.classes "alert-box"
     switch xhr.status
       when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行代码。"
 
-  on_leave:()->
+  on_leave:()=>
     that = this
     if not _.isNull(@model.get('partner_id'))
       @model.bind "paired_completed",(event)->
@@ -88,7 +84,8 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
         that.model.unbind "paired_completed"
       @model.leave()
 
-  render: ->
+  render: =>
+    console.log "render progress"
     Miamir.Views.Tasks.TaskCardView.prototype.render.call(this);
     @$('#card').append(@memebers_templ())
     @$('.list-card-members').append(@gravatar_templ(@model.get('owner')))

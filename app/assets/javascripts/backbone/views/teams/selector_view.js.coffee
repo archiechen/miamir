@@ -9,7 +9,7 @@ class Miamir.Views.Teams.SelectorView extends Backbone.View
   initialize:()->
     _.bindAll(this, 'change_team');
 
-  change_team:(event)->
+  change_team:(event)=>
     that = this
     $.ajax "/teams/"+$(event.currentTarget).val()+"/current",
       type: "PUT"
