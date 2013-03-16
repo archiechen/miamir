@@ -1,8 +1,9 @@
 <%= form_for @task, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= hidden_field(:task, :priority)%>
   <div class="control-group">
     <%= f.label :title, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :title, :class => 'text_field' %>
+      <%= f.text_area :title, :class => 'text_area',:size=>'24x6' %>
     </div>
   </div>
   <div class="control-group">
@@ -12,9 +13,18 @@
     </div>
   </div>
   <div class="control-group">
+    <%= f.label :priority, :class => 'control-label' %>
+    <div class="controls">
+      <div style="margin-bottom: 2em">  
+        <span id="priorityAmount" style="border:0; color:#f6931f; font-weight:bold;"></span>             
+        <div id="prioritySlider" class="slider-primary" style="margin-top: 1em;width:50%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
     <%= f.label :description, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_area :description, :class => 'text_area' %>
+      <%= f.text_area :description, :class => 'text_area',:size=>'24x6' %>
     </div>
   </div>
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130313101350) do
+ActiveRecord::Schema.define(:version => 20130316121853) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -29,14 +29,15 @@ ActiveRecord::Schema.define(:version => 20130313101350) do
   create_table "tasks", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.string   "status"
     t.integer  "owner_id"
     t.integer  "estimate",    :default => 0
     t.integer  "partner_id"
     t.integer  "scale",       :default => 0
     t.integer  "team_id"
+    t.integer  "priority",    :default => 50
   end
 
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"

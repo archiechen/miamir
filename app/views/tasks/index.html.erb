@@ -7,6 +7,7 @@
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:team) %></th>
+      <th><%= model_class.human_attribute_name(:priority) %></th>
       <th><%= model_class.human_attribute_name(:title) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -17,8 +18,9 @@
     <% @tasks.each do |task| %>
       <tr>
         <td><%= link_to task.id, task_path(task) %></td>
-        <td><%= task.title %></td>
         <td><%= task.team.name %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.title %></td>
         <td><%= task.description %></td>
         <td><%=l task.created_at %></td>
         <td>

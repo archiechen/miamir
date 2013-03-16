@@ -10,21 +10,19 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
 
   initialize:->
     @$el.addClass('task-detail')
-    _.bindAll(this, 'addDuration')
-    _.bindAll(this, 'show')
     @model.once 'change',@render,this
     @durations = new Miamir.Collections.DurationsCollection(task_id:@model.get('id'))
     @durations.on "reset",@addAllDurations,
     @render()
 
-  addDuration:(duration)->
+  addDuration:(duration)=>
     @$('#durations').append(@duration_templ(duration.toJSON())) if duration.get('minutes')
 
-  addAllDurations:()->
+  addAllDurations:()=>
     @durations.each(@addDuration)
 
-  show:->
-      @$el.modal('show');
+  show:=>
+    @$el.modal('show');
 
   render: ->
     #@durations.fetch()
@@ -65,5 +63,10 @@ class Miamir.Views.Tasks.ShowView extends Backbone.View
       e.preventDefault();
       $('#task-description').editable('toggle');
 
+    switch @model.get('scale')
+      when 1 then @$('#scale').addClass("label-success")
+      when 2 then @$('#scale').addClass("label-info")
+      when 4 then @$('#scale').addClass("label-warning")
+      when 8 then @$('#scale').addClass("label-danger")
     
     return this

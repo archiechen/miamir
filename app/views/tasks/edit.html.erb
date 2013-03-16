@@ -3,3 +3,21 @@
   <h1><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human %></h1>
 </div>
 <%= render :partial => 'form' %>
+<script type="text/javascript">
+  $(function() {
+    /* Priority Slider */
+    $("#prioritySlider").slider({
+      range: "min",
+      value: <%=@task.priority%>,
+      min: 5,
+      max: 100,
+      step: 5,
+      slide: function(event, ui) {
+        $("#priorityAmount").text(ui.value);
+        $("#task_priority").val(ui.value);
+      }
+    });
+
+    $("#priorityAmount").text($("#prioritySlider").slider("value"));
+  });
+</script>
