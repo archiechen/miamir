@@ -14,11 +14,11 @@
 ActiveRecord::Schema.define(:version => 20130313101350) do
 
   create_table "durations", :force => true do |t|
-    t.integer  "minutes"
+    t.integer  "minutes",    :default => 0
     t.integer  "task_id"
     t.integer  "owner_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "partner_id"
   end
 

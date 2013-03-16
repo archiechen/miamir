@@ -6,7 +6,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   
   className: "span4"
 
-  initialize: () =>
+  init: () =>
     if not _.isUndefined(@options.className)
       @$el.removeClass('span4')
       @$el.addClass(@options.className)
@@ -96,7 +96,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
 
 class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
     @name = "Backlog"
     _.bindAll @, "on_cancel"
 
@@ -112,7 +112,8 @@ class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.Taskboa
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    console.log 'shi!'
+    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
     @name = "Ready"
     _.bindAll @, "on_checkout"
 
@@ -128,7 +129,7 @@ class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.Taskboard
 
 class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
     @name = "Progress"
     _.bindAll @, "on_checkin"
   #override add one
@@ -148,7 +149,7 @@ class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.Taskbo
 
 class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () =>
-    Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
+    Miamir.Views.Tasks.TaskboardView.prototype.init.call(this)
     @name = "Done"
 
   dropped_handle:(from_task)->
