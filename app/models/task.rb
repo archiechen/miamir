@@ -28,7 +28,7 @@ class Task < ActiveRecord::Base
 
   #参与者
   def participants()
-    self.durations.joins(:owner).select('"users"."gravatar" as gravatar ,sum(minutes) as total').group('"users"."gravatar"')
+    self.durations.joins(:owner).select('`users`.`gravatar` as gravatar ,sum(minutes) as total').group('`users`.`gravatar`')
   end
 
   def checkin(user)
