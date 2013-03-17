@@ -21,7 +21,7 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'sqlite3'
   gem "rspec"
   gem "rspec-rails"
   gem 'factory_girl_rails'
@@ -30,7 +30,7 @@ end
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'devise'
-gem "therubyracer"
+gem "therubyracer", ">= 0.10.2", :group => :assets, :platform => :ruby
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 gem "rails-backbone" #, :git => 'https://github.com/codebrew/backbone-rails.git'
