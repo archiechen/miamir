@@ -45,10 +45,12 @@
     <% end %>
   </div>
   <div class="span4">
+    <% if task.status=='Done'%>
       <%= link_to t('.archive', :default => t("helpers.links.archive")),
                       archive_task_path(task), :method => :put,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-primary' %>
+    <% end %>
   </div>
 </div>
 <hr>
