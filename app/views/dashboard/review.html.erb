@@ -22,7 +22,7 @@
 
       <p></p>
       <p>
-        <i class="icon-large icon-calendar"></i> <%=task.created_at.to_s(:db)%>
+        <i class="icon-large icon-calendar"></i> <%=time_ago_in_words task.updated_at%> ago
         | <i class="icon-large icon-money"></i> $<%=task.scale%> 
         | <i class="icon-large icon-magic"></i> <%=task.estimate%> Hours
         | <i class="icon-large icon-time"></i> <%=task.consuming%> Minutes
