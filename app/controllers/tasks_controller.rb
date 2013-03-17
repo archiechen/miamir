@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.where(params[:task]).page(params[:page])
+    @tasks = @current_team.tasks.where(params[:task]).page(params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks }
@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   # GET /tasks/new.json
   def new
-    @task = Task.new
+    @task = Task.new(:team=>@current_team)
 
     respond_to do |format|
       format.html # new.html.erb

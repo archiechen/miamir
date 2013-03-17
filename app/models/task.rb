@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Task < ActiveRecord::Base
-  attr_accessible :team_id, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
+  attr_accessible :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
 
   default_scope order('priority DESC')
 
