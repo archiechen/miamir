@@ -8,6 +8,7 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:team) %></th>
       <th><%= model_class.human_attribute_name(:priority) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
       <th><%= model_class.human_attribute_name(:title) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -20,6 +21,7 @@
         <td><%= link_to task.id, task_path(task) %></td>
         <td><%= task.team.name %></td>
         <td><%= task.priority %></td>
+        <td><span class="label <%= 'label-inverse' if task.status=='New'%><%= 'label-warning' if task.status=='Ready'%><%= 'label-info' if task.status=='Progress'%><%= 'label-success' if task.status=='Done'%>"><%= task.status %></span></td>
         <td><%= task.title %></td>
         <td><%= task.description %></td>
         <td><%=l task.created_at %></td>
@@ -36,6 +38,7 @@
     <% end %>
   </tbody>
 </table>
+<%= paginate @tasks %>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_task_path,

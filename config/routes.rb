@@ -16,6 +16,7 @@ Miamir::Application.routes.draw do
       put :done
       put :cancel
       put :pair
+      put :archive
       delete :pair,:action=>"leave"
     end
   end
@@ -81,4 +82,5 @@ Miamir::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
   match '/dashboard' => 'dashboard#index', :as => "dashboard", :via => :get
   match '/planning' => 'dashboard#planning', :as => "planning", :via => :get
+  match '/review' => 'dashboard#review', :as => "review", :via => :get
 end

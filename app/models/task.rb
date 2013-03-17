@@ -26,6 +26,11 @@ class Task < ActiveRecord::Base
     self.durations.inject(0) {|sum, n| sum + n[:minutes] }
   end
 
+  #参与者
+  def participants()
+    self.durations.joins(:owner).select('"users"."gravatar" as gravatar ,sum(minutes) as total').group('owner_id')
+  end
+
   def checkin(user)
     Task.transaction do
       self.durations.create!(:owner=>user)

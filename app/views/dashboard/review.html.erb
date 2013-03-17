@@ -1,0 +1,60 @@
+<div class="row-fluid">
+  <div class="span4">
+    <dl class="dl-horizontal">
+      <dt>Total Scale</dt>
+      <dd><span class="label label-important">$<%=@tasks.inject(0) {|sum, n| sum + n[:scale] }%></span></dd>
+      <dt>Done Scale</dt>
+      <dd><span class="label label-success">$<%=@tasks.inject(0) {|sum, n| (n[:status]=='Done')? (sum + n[:scale]) : sum }%></span></dd>
+    </dl>
+  </div>
+  <div class="span4">
+    <dl class="dl-horizontal">
+      <dt>Total Consuming</dt>
+      <dd><span class="label label-important"><%=@tasks.inject(0) {|sum, n| (n.consuming())? sum + n.consuming() : sum }%> Minutes</span></dd>
+    </dl>
+  </div>
+</div>
+<% @tasks.each do |task| %>
+<div class="row-fluid">
+  <div class="span5">
+      <h4><%=task.title%></h4>
+      <p><%=task.description%></p>
+
+      <p></p>
+      <p>
+        <i class="icon-large icon-calendar"></i> <%=task.created_at.to_s(:db)%>
+        | <i class="icon-large icon-money"></i> $<%=task.scale%> 
+        | <i class="icon-large icon-magic"></i> <%=task.estimate%> Hours
+        | <i class="icon-large icon-time"></i> <%=task.consuming%> Minutes
+        | <i class="icon-large icon-tags"></i> <span class="label <%= 'label-success' if task.status=='Done'%>"><%=task.status%></span>
+      </p>
+     
+  </div>
+  <div class="span3">
+    <% if task.consuming() > task.estimate*60%>
+    <div class="progress" style="margin-top:3em;">
+        <div class="bar bar-danger" style="width: <%=task.estimate*60*100/task.consuming()%>%;"><%=task.estimate*60*100/task.consuming()%>%</div>
+    </div>
+    <% elsif task.estimate > 0 %>
+    <div class="progress" style="margin-top:3em;">
+        <div class="bar bar-success" style="width: <%=task.consuming()*100/(task.estimate*60)%>%;"><%=task.consuming()*100/(task.estimate*60)%>%</div>
+    </div>
+    <% end %>
+    <% task.participants().each do |duration| %>
+      <img src="http://gravatar.com/avatar/<%=duration.gravatar%>?s=40&amp;d=retro&amp;r=x">
+    <% end %>
+  </div>
+  <div class="span4">
+      <%= link_to t('.archive', :default => t("helpers.links.archive")),
+                      archive_task_path(task), :method => :put,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-primary' %>
+  </div>
+</div>
+<hr>
+<% end %>
+<script type="text/javascript">
+  $(function() {
+    new Miamir.Views.Teams.SelectorView()
+  });
+</script>

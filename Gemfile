@@ -34,6 +34,7 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 gem "rails-backbone", :git => 'https://github.com/codebrew/backbone-rails.git'
 gem "thin"
+gem "kaminari" 
 
 
 

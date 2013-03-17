@@ -10,9 +10,6 @@ class Miamir.Routers.PlanningRouter extends Backbone.Router
     ".*"        : "index"
 
   index:->
-    $('#main-nav li').removeClass('active');
-    $("#main-nav li:nth-child(2)").addClass('active');
-   
     @backlog_view = new Miamir.Views.Tasks.BacklogTaskboardView(className:"span6",from_tasks:[@ready_tasks], tasks:@backlog_tasks, accepts:"#Ready .well-taskcard")
     $("#tasks_wall").html(@backlog_view.render().el)
     @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(className:"span6",from_tasks:[@backlog_tasks], tasks: @ready_tasks, accepts:"#Backlog .well-taskcard")

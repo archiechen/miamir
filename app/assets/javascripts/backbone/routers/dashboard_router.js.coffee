@@ -13,8 +13,6 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
     ".*"        : "index"
 
   index: ->
-    $('#main-nav li').removeClass('active');
-    $("#main-nav li:nth-child(1)").addClass('active');
     @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(from_tasks:[@progress_tasks,@done_tasks], tasks: @ready_tasks, accepts:"#Progress .well-taskcard,#Done .well-taskcard")
     $("#tasks_wall").html(@ready_view.render().el)
 

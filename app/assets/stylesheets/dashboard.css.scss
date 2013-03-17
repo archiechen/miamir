@@ -7,6 +7,11 @@
 .task-detail{width:50em;margin-left:-360px;padding: 1em;}
 .text_area{width:50%;}
 
+.the-icons i:hover [class^="icon-"]:before, .the-icons li:hover [class*=" icon-"]:before {
+font-size: 28px;
+vertical-align: -5px;
+}
+
 #task-title{font-size: 18px;margin-bottom: 1em;}
 
 .edit-title{

@@ -76,6 +76,9 @@ GEM
       jquery-rails
       railties (>= 3.1.0)
     json (1.7.7)
+    kaminari (0.14.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     less (2.3.1)
       commonjs (~> 0.2.6)
     less-rails (2.3.2)
@@ -177,6 +180,7 @@ DEPENDENCIES
   factory_girl_rails
   jquery-rails
   jquery-ui-rails
+  kaminari
   less-rails
   pg
   rails (= 3.2.11)

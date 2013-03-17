@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.where(params[:task])
+    @tasks = Task.where(params[:task]).page(params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks }
@@ -79,6 +79,21 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to tasks_url }
       format.json { head :no_content }
+    end
+  end 
+
+  # PUT /tasks/1/archive
+  def archive
+    @task = Task.find(params[:id])
+
+    respond_to do |format|
+      if @task.update_attributes(:status=>'Archived')
+        format.html { redirect_to review_url }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to review_url, notice: 'Archive was failed.' }
+      end
+     
     end
   end
 

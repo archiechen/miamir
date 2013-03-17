@@ -16,5 +16,10 @@ class DashboardController < ApplicationController
     end
   end
 
+  def review
+    if @current_team
+      @tasks = @current_team.tasks.where(:status=>['Ready','Done'],:updated_at => (Time.now.prev_week)..(Time.now.end_of_week)).all
+    end
+  end
 
 end
