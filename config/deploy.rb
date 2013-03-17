@@ -17,9 +17,8 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{release_path} && bundle install --deployment &&
       rake RAILS_ENV=production db:migrate &&
-      rake assets:precompile
-
-      thin stop -p #{deploy_to}/shared/pids/thin.pid &&
-      thin -e production start -p 8080  -d"
+      rake assets:precompile &&
+      thin stop &&
+      bundle exec thin -e production start -p 9000  -d"
   end
 end
