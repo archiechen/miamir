@@ -114,4 +114,15 @@ describe Task do
     end
   end
 
+  describe "emptying" do
+    it "执行emptying之后，所有Progress状态的任务都变为Ready，并且记录工时" do
+      Task.emptying()
+      t = Task.find(@progress_task.id)
+      t.status.should =='Ready'
+      t.durations.length == 1
+      t.durations.first.minutes.should == 60
+
+    end
+  end
+
 end

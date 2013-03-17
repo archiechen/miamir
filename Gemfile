@@ -38,6 +38,7 @@ gem "rails-backbone" #, :git => 'https://github.com/codebrew/backbone-rails.git'
 gem 'capistrano'
 gem "thin"
 gem "kaminari" 
+gem "rufus-scheduler"
 
 
 
