@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130318055410) do
+ActiveRecord::Schema.define(:version => 20130318085716) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20130318055410) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "gravatar"
+    t.string   "redmine_key"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

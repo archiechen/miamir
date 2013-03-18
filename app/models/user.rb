@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :redmine_key, :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
   has_one :task,:foreign_key=>"owner_id"
@@ -16,6 +16,13 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :teams
 
   before_create :set_gravatar
+
+  def self.current
+    Thread.current[:user]
+  end
+  def self.current=(user)
+    Thread.current[:user] = user
+  end
 
   def short_name
     self.email.split("@")[0]

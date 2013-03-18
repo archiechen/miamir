@@ -9,8 +9,8 @@ class DurationObserver < ActiveRecord::Observer
       request = Net::HTTP::Post.new(uri.request_uri)
       request.body = Redmine::TimeEntry.new(duration).to_json
       request["content-type"] = "application/json"
+      request["X-Redmine-API-Key"] = User.current.redmine_key
       response = http.request(request)
-      #time_entry = JSON.parse(response.body)
         
       puts response.body
     end
