@@ -4,7 +4,7 @@ class Redmine::TimeEntry
 
   def initialize(duration)
     self.issue_id  = duration.task.redmine_issue_id
-    self.hours = (duration.minutes/60.0).ceil
+    self.hours = (duration.task.redmine_issue_id.nil?)? 0 : (duration.minutes/60.0).ceil
     self.activity_id = 9
     
   end
