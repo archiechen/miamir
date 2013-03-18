@@ -4,7 +4,7 @@ set :application, 'miamir'
 set :repository,  'git://207.97.227.239/archiechen/miamir.git'
 set :deploy_to, '/home/admin/miamir'
 set :scm, 'git'
-set :branch, 'master'
+set :branch, 'customized'
 set :keep_releases, 5
 set :rails_env, 'production'
 set :use_sudo, false
