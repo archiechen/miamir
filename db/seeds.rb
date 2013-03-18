@@ -8,7 +8,7 @@
 team1 = Team.create! :name =>"Miami"
 puts "New team created: " << team1.name
 
-team2 = Team.create! :name =>"Billing"
+team2 = Team.create! :name =>"Refresh" ,:redmine_project_id=>17
 puts "New team created: " << team2.name
 
 puts 'SETTING UP DEFAULT USER LOGIN'

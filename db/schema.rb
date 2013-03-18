@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130316121853) do
+ActiveRecord::Schema.define(:version => 20130318055410) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -29,15 +29,16 @@ ActiveRecord::Schema.define(:version => 20130316121853) do
   create_table "tasks", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "status"
     t.integer  "owner_id"
-    t.integer  "estimate",    :default => 0
+    t.integer  "estimate",         :default => 0
     t.integer  "partner_id"
-    t.integer  "scale",       :default => 0
+    t.integer  "scale",            :default => 0
     t.integer  "team_id"
-    t.integer  "priority",    :default => 50
+    t.integer  "priority",         :default => 50
+    t.integer  "redmine_issue_id"
   end
 
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
@@ -47,8 +48,9 @@ ActiveRecord::Schema.define(:version => 20130316121853) do
 
   create_table "teams", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "redmine_project_id"
   end
 
   create_table "teams_users", :id => false, :force => true do |t|

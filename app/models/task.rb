@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Task < ActiveRecord::Base
-  attr_accessible :team_id, :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
+  attr_accessible :redmine_issue_id,:team_id, :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
 
   default_scope order('priority DESC')
 
@@ -8,7 +8,7 @@ class Task < ActiveRecord::Base
   belongs_to :partner, :class_name=>"User", :foreign_key=>"partner_id"
   belongs_to :team
 
-  has_many :durations
+  has_many :durations,:dependent => :delete_all
 
   before_save :default_values
 
