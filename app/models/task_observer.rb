@@ -14,7 +14,7 @@ class TaskObserver < ActiveRecord::Observer
       response = http.request(request)
 
       issue = JSON.parse(response.body)
-      taks.logger.info(issue)
+      task.logger.info(issue)
       task.redmine_issue_id = issue["issue"]["id"]
     else
       User.current.logger.warn("#{User.current.email} dosen't set redmine key!")
