@@ -5,7 +5,7 @@ class Redmine::IssueUpdated
   def initialize(task)
     self.estimated_hours = task.estimate
     self.subject = task.title
-    self.priority_id = ENV['redmine_priority_start'].to_i+task.priority/20
+    self.priority_id = ENV['redmine_priority_start'].to_i+(task.priority/20.0).ceil
     self.description = task.description
     self.done_ratio = 0
     if task.status == "Progress"
