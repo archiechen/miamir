@@ -45,4 +45,7 @@ Miamir::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  ENV['redmine_root'] = 'http://localhost:4000'
+  ENV['redmine_priority_start'] = '1'
 end

@@ -34,4 +34,5 @@ Miamir::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  ENV['redmine_root'] = 'http://localhost:4000'
 end

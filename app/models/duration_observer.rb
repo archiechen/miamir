@@ -4,7 +4,7 @@ class DurationObserver < ActiveRecord::Observer
   def before_update(duration)
     time_entry = Redmine::TimeEntry.new(duration)
     if time_entry.hours>0 and !User.current.redmine_key.nil?
-      uri = URI.parse("http://192.168.6.180/redmine/time_entries.json")
+      uri = URI.parse(ENV['redmine_root']+"/time_entries.json")
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Post.new(uri.request_uri)
       request.body = time_entry.to_json
