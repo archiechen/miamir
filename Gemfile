@@ -31,7 +31,7 @@ gem "therubyracer", ">= 0.10.2", :group => :assets, :platform => :ruby
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 gem "rails-backbone" #, :git => 'https://github.com/codebrew/backbone-rails.git'
-
+gem "pg"
 gem 'capistrano'
 gem "thin"
 gem "kaminari" 
