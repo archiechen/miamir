@@ -3,17 +3,8 @@ class TaskObserver < ActiveRecord::Observer
 
   def before_create(task)
     if !User.current.redmine_key.nil?
-      puts Redmine::Issue.new(task).to_json
-      uri = URI.parse(ENV['redmine_root']+"/issues.json")
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Post.new(uri.request_uri)
-      request.body = Redmine::Issue.new(task).to_json
-
-      request["content-type"] = "application/json"
-      request["X-Redmine-API-Key"] = User.current.redmine_key
-      response = http.request(request)
-
-      issue = JSON.parse(response.body)
+      response_body = Redmine::Helper.create_issue(Redmine::Issue.new(task),User.current.redmine_key)
+      issue = JSON.parse(response_body)
       task.logger.info(issue)
       task.redmine_issue_id = issue["issue"]["id"]
     else
@@ -24,14 +15,8 @@ class TaskObserver < ActiveRecord::Observer
   def before_update(task)
     if !User.current.redmine_key.nil?
       if task.status_changed?
-        uri = URI.parse(ENV['redmine_root']+"/issues/"+task.redmine_issue_id.to_s+".json")
-        http = Net::HTTP.new(uri.host, uri.port)
-        request = Net::HTTP::Put.new(uri.request_uri)
-        request.body = Redmine::IssueUpdated.new(task).to_json
-        request["content-type"] = "application/json"
-        request["X-Redmine-API-Key"] = User.current.redmine_key
-        response = http.request(request)
-        task.logger.info(response.code+" "+response.body)
+        response_body = Redmine::Helper.update_issue(task.redmine_issue_id.to_s,Redmine::IssueUpdated.new(task),User.current.redmine_key)
+        task.logger.info(response_body)
       end
     else
       User.current.logger.warn("#{User.current.email} dosen't set redmine key!")

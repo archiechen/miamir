@@ -3,16 +3,14 @@ class DurationObserver < ActiveRecord::Observer
 
   def before_update(duration)
     time_entry = Redmine::TimeEntry.new(duration)
-    if time_entry.hours>0 and !User.current.redmine_key.nil?
-      uri = URI.parse(ENV['redmine_root']+"/time_entries.json")
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Post.new(uri.request_uri)
-      request.body = time_entry.to_json
-      request["content-type"] = "application/json"
-      request["X-Redmine-API-Key"] = User.current.redmine_key
-      response = http.request(request)
+    if time_entry.hours>0 and !duration.owner.redmine_key.nil?
+      response_body = Redmine::Helper.create_time_entry(time_entry,duration.owner.redmine_key)
+      duration.logger.info(JSON.parse(response_body))
 
-      duration.logger.info(JSON.parse(response.body))
+      if !duration.partner.nil? and !duration.partner.redmine_key.nil?
+        response_body = Redmine::Helper.create_time_entry(time_entry,duration.partner.redmine_key)
+        duration.logger.info(JSON.parse(response_body))
+      end
     end
   end
   

@@ -20,6 +20,7 @@
     });
 
     $("#priorityAmount").text($("#prioritySlider").slider("value"));
+    $("#task_priority").val($("#prioritySlider").slider("value"));
 
     new Miamir.Views.Teams.SelectorView()
   });
