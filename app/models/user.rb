@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :redmine_key, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :redmine_user_id, :redmine_key, :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
   has_one :task,:foreign_key=>"owner_id"

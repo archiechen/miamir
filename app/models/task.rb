@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Task < ActiveRecord::Base
-  attr_accessible :redmine_issue_id,:team_id, :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
+  attr_accessible :redmine_assigned_to_id,:redmine_issue_id,:team_id, :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
 
   default_scope order('priority DESC')
 
@@ -96,6 +96,9 @@ class Task < ActiveRecord::Base
       self.estimate ||= 0
       self.scale ||= 0
       self.status ||='New'
+      if self.status == 'Progress'
+        self.redmine_assigned_to_id = self.owner.redmine_user_id
+      end
     end
 
     def user_own_only_one_task

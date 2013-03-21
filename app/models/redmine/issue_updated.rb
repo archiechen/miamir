@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Redmine::IssueUpdated
-  attr_accessor :status_id,:estimated_hours,:done_ratio,:subject,:priority_id,:description
+  attr_accessor :status_id,:estimated_hours,:done_ratio,:subject,:priority_id,:description,:assigned_to_id
 
   def initialize(task)
     self.estimated_hours = task.estimate
@@ -17,7 +17,8 @@ class Redmine::IssueUpdated
       self.status_id = 5
     else
       self.status_id = 1
-    end 
+    end
+    self.assigned_to_id=task.redmine_assigned_to_id
   end
 
   def to_json(options = {})

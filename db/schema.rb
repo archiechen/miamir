@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130318085716) do
+ActiveRecord::Schema.define(:version => 20130321122511) do
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -29,16 +29,17 @@ ActiveRecord::Schema.define(:version => 20130318085716) do
   create_table "tasks", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "status"
     t.integer  "owner_id"
-    t.integer  "estimate",         :default => 0
+    t.integer  "estimate",               :default => 0
     t.integer  "partner_id"
-    t.integer  "scale",            :default => 0
+    t.integer  "scale",                  :default => 0
     t.integer  "team_id"
-    t.integer  "priority",         :default => 50
+    t.integer  "priority",               :default => 50
     t.integer  "redmine_issue_id"
+    t.integer  "redmine_assigned_to_id", :default => 0
   end
 
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20130318085716) do
     t.datetime "updated_at",                             :null => false
     t.string   "gravatar"
     t.string   "redmine_key"
+    t.integer  "redmine_user_id",        :default => 0
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
