@@ -13,9 +13,10 @@ class TaskObserver < ActiveRecord::Observer
   end
 
   def before_update(task)
-    if !User.current.redmine_key.nil?
+    owner = User.current.nil?? task.owner : User.current
+    if !owner.redmine_key.nil?
       if task.status_changed?
-        response_body = Redmine::Helper.update_issue(task.redmine_issue_id.to_s,Redmine::IssueUpdated.new(task),User.current.redmine_key)
+        response_body = Redmine::Helper.update_issue(task.redmine_issue_id.to_s,Redmine::IssueUpdated.new(task), owner.redmine_key)
         task.logger.info(response_body)
       end
     else
