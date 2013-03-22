@@ -30,7 +30,6 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     show_view.show()
 
   render: ->
-    console.log "render card"
     $(@el).html(@template(@model.toJSON()))
     $(@el).draggable({
         addClasses: false,
