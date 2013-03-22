@@ -15,15 +15,19 @@ class Task < ActiveRecord::Base
   validate :user_own_only_one_task,:progress_must_be_estimated,:ready_must_has_scale
 
   def self.emptying
-    tasks = Task.where(:status=>'Progress')
-    tasks.each do |task|
-      task.status = 'Ready'
-      duration = task.durations.where(:minutes=>0).first
-      working_minutes = ((Time.now.change(:hour=>18)-duration.created_at)/1.minute).ceil
-      duration.minutes = (working_minutes <= 0 )? 60 : working_minutes
-      duration.save()
-      task.save(:validate=>false)
-    end
+    Task.logger.debug("emptying start...")
+      tasks = Task.where(:status=>'Progress')
+      tasks.each do |task|
+        task.status = 'Ready'
+        duration = task.durations.where(:minutes=>0).first
+        if !duration.nil?
+          working_minutes = ((Time.now.change(:hour=>18)-duration.created_at)/1.minute).ceil
+          duration.minutes = (working_minutes <= 0 )? 60 : working_minutes
+          duration.save()
+        end
+        task.save(:validate=>false)
+      end
+    Task.logger.debug("emptying end...")
   end
 
   def serializable_hash(options={})
