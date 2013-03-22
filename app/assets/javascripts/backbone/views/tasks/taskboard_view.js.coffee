@@ -21,12 +21,15 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.each(@addOne)
 
   addOne: (task) ->
+
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
+    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)+task.get("scale"))
     @$("#list-cards").append(view.render().el).fadeIn()
 
   remove:(event)=>
     @options.tasks.remove event.old_task
+    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)-event.old_task.get("scale"))
     event.old_task.unbind 'drag_completed',@remove
 
   fetch:(team_id)=>
@@ -129,6 +132,7 @@ class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.Taskbo
   #override add one
   addOne: (task) =>
     task.bind 'drag_completed',@remove
+    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)+task.get("scale"))
     view = new Miamir.Views.Tasks.ProgressTaskCardView({model : task})
     @$("#list-cards").append(view.render().el).fadeIn()
 
