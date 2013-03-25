@@ -16,17 +16,17 @@ class Task < ActiveRecord::Base
 
   def self.emptying
     Task.logger.debug("emptying start...")
-    tasks = Task.where(:status=>'Progress')
-    tasks.each do |task|
-      task.status = 'Ready'
-      duration = task.durations.where(:minutes=>0).first
-      if !duration.nil?
-        working_minutes = ((Time.now.change(:hour=>18)-duration.created_at)/1.minute).ceil
-        duration.minutes = (working_minutes <= 0 )? 60 : working_minutes
-        duration.save()
+      tasks = Task.where(:status=>'Progress')
+      tasks.each do |task|
+        task.status = 'Ready'
+        duration = task.durations.where(:minutes=>0).first
+        if !duration.nil?
+          working_minutes = ((Time.now.change(:hour=>18)-duration.created_at)/1.minute).ceil
+          duration.minutes = (working_minutes <= 0 )? 60 : working_minutes
+          duration.save()
+        end
+        task.save(:validate=>false)
       end
-      task.save(:validate=>false)
-    end
     Task.logger.debug("emptying end...")
   end
 

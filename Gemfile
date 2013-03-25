@@ -2,9 +2,6 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-#gem 'pg'
-gem 'mysql2'
-
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -34,7 +31,7 @@ gem "therubyracer", ">= 0.10.2", :group => :assets, :platform => :ruby
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 gem "rails-backbone" #, :git => 'https://github.com/codebrew/backbone-rails.git'
-
+gem "mysql2"
 gem 'capistrano'
 gem "thin"
 gem "kaminari" 

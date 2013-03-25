@@ -26,14 +26,14 @@
       tooltipOpts: {
         content: '%s: %y'
       },
-      xaxis: { mode: "time"}, 
+      xaxis: { mode: "time",timeformat: "%m/%d"}, 
       grid: { borderWidth: 2, hoverable: true }
     };
     
     var el = $("#burning-chart");
     var data =[
-      {data:<%=@burnings.to_json.html_safe%>,label:"Burning"},
-      {data:<%=@velocity.to_json.html_safe%>,label:"Velocity",
+      {data:<%=@remain.to_json.html_safe%>,label:"Remain"},
+      {data:<%=@burning.to_json.html_safe%>,label:"Burning",
         lines: { lineWidth: 2, fill: false }  
       }]
     if (el.length) {

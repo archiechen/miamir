@@ -23,25 +23,25 @@ class DashboardController < ApplicationController
   end
 
   def burning
-    @burnings = []
-    @velocity = []
-    start = DateTime.now.beginning_of_day
+    @burning = []
+    @remain = []
+    start = DateTime.now.beginning_of_day - 7.day
+    burnings = @current_team.burnings.where("created_at >= ?",start)
     10.times do
+      burning = burnings.find{ |x| x.created_at.beginning_of_day == start}
+      if !burning.nil?
+        @remain.push([burning.created_at.beginning_of_day.to_i*1000,burning.remain])
+        @burning.push([burning.created_at.beginning_of_day.to_i*1000,burning.burning])
+      else
+        @remain.push([(start).to_i*1000,nil])
+        @burning.push([(start).to_i*1000,nil])
+      end
       start += 1.day
-      @burnings.push([(start).to_i*1000,rand(100)])
-      @velocity.push([(start).to_i*1000,rand(10)])
     end
-
-    start += 1.day
-    @burnings.push([(start).to_i*1000,nil])
-    @velocity.push([(start).to_i*1000,nil]) 
-    start += 1.day
-    @burnings.push([(start).to_i*1000,nil])
-    @velocity.push([(start).to_i*1000,nil])
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: [@burnings,@velocity] }
+      format.json { render json: [@burning,@remain] }
     end
   end
 end

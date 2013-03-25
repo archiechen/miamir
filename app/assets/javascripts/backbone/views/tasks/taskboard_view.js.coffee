@@ -19,6 +19,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     
   addAll: () =>
     @$("#list-cards").empty()
+    @$("#total_scale").html(0)
     @options.tasks.each(@addOne)
 
   addOne: (task) ->
@@ -100,7 +101,7 @@ class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.Taskboa
     Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Backlog"
 
-  fetch:(team_id)->
+  fetch:(team_id)=>
     @options.tasks.fetch {data:{task:{status:"New",team_id:team_id}}}
 
   dropped_handle:(from_task)=>

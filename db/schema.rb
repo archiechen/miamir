@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321122511) do
+ActiveRecord::Schema.define(:version => 20130325080023) do
+
+  create_table "burnings", :force => true do |t|
+    t.integer  "burning"
+    t.integer  "remain"
+    t.integer  "team_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -25,6 +33,16 @@ ActiveRecord::Schema.define(:version => 20130321122511) do
   add_index "durations", ["owner_id"], :name => "index_durations_on_owner_id"
   add_index "durations", ["partner_id"], :name => "index_durations_on_partner_id"
   add_index "durations", ["task_id"], :name => "index_durations_on_task_id"
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "tasks", :force => true do |t|
     t.string   "title"
