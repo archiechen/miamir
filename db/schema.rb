@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130316121853) do
+ActiveRecord::Schema.define(:version => 20130325080023) do
+
+  create_table "burnings", :force => true do |t|
+    t.integer  "burning"
+    t.integer  "remain"
+    t.integer  "team_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "durations", :force => true do |t|
     t.integer  "minutes",    :default => 0
@@ -26,18 +34,30 @@ ActiveRecord::Schema.define(:version => 20130316121853) do
   add_index "durations", ["partner_id"], :name => "index_durations_on_partner_id"
   add_index "durations", ["task_id"], :name => "index_durations_on_task_id"
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
   create_table "tasks", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "status"
     t.integer  "owner_id"
-    t.integer  "estimate",    :default => 0
+    t.integer  "estimate",               :default => 0
     t.integer  "partner_id"
-    t.integer  "scale",       :default => 0
+    t.integer  "scale",                  :default => 0
     t.integer  "team_id"
-    t.integer  "priority",    :default => 50
+    t.integer  "priority",               :default => 50
+    t.integer  "redmine_issue_id"
+    t.integer  "redmine_assigned_to_id", :default => 0
   end
 
   add_index "tasks", ["owner_id"], :name => "index_tasks_on_owner_id"
@@ -47,8 +67,9 @@ ActiveRecord::Schema.define(:version => 20130316121853) do
 
   create_table "teams", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "redmine_project_id"
   end
 
   create_table "teams_users", :id => false, :force => true do |t|
@@ -73,6 +94,8 @@ ActiveRecord::Schema.define(:version => 20130316121853) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "gravatar"
+    t.string   "redmine_key"
+    t.integer  "redmine_user_id",        :default => 0
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
