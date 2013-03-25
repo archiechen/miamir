@@ -84,7 +84,6 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
       @model.leave()
 
   render: =>
-    console.log "render progress"
     Miamir.Views.Tasks.TaskCardView.prototype.render.call(this);
     @$('#card').append(@memebers_templ())
     @$('.list-card-members').append(@gravatar_templ(@model.get('owner')))

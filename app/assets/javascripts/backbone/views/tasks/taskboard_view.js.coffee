@@ -23,6 +23,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.each(@addOne)
 
   addOne: (task) ->
+    task.unbind 'drag_completed',@remove
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
     @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)+task.get("scale"))
