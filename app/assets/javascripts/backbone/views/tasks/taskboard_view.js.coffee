@@ -15,6 +15,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.comparator = (task)->
       return 100-task.get 'priority'
     _.bindAll @, "addOne"
+    _.bindAll @, "fetch"
     
   addAll: () =>
     @$("#list-cards").empty()
@@ -32,7 +33,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)-event.old_task.get("scale"))
     event.old_task.unbind 'drag_completed',@remove
 
-  fetch:(team_id)=>
+  fetch:(team_id)->
     @options.tasks.fetch {data:{task:{status:@name,team_id:team_id}}}
 
   render: () =>
@@ -98,6 +99,9 @@ class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.Taskboa
   initialize: () ->
     Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Backlog"
+
+  fetch:(team_id)->
+    @options.tasks.fetch {data:{task:{status:"New",team_id:team_id}}}
 
   dropped_handle:(from_task)=>
     that = this

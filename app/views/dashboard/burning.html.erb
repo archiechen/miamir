@@ -1,0 +1,43 @@
+<div id="burning-chart" class="span12" style="height:325px"></div>
+<script type="text/javascript">
+  $(function() {
+    var colors = ['#750000', '#F90', '#777', '#555','#002646','#999','#bbb','#ccc','#eee'];
+    //var colors = ['#5F9B43', '#DB7D1F', '#BA4139', '#777','#555','#999','#bbb','#ccc','#eee'];
+    var options = {
+      colors: colors,
+      series: {
+        lines: { 
+          show: true, 
+          fill: true, 
+          lineWidth: 4, 
+          steps: false, 
+          fillColor: { colors: [{opacity: 0.4}, {opacity: 0}] } 
+        },
+        points: { 
+          show: true, 
+          radius: 4, 
+          fill: true
+        }
+      }, 
+      legend: {
+        position: 'ne'
+      },
+      tooltip: true,
+      tooltipOpts: {
+        content: '%s: %y'
+      },
+      xaxis: { mode: "time"}, 
+      grid: { borderWidth: 2, hoverable: true }
+    };
+    
+    var el = $("#burning-chart");
+    var data =[
+      {data:<%=@burnings.to_json.html_safe%>,label:"Burning"},
+      {data:<%=@velocity.to_json.html_safe%>,label:"Velocity",
+        lines: { lineWidth: 2, fill: false }  
+      }]
+    if (el.length) {
+      $.plot(el, data, options );
+    }
+  });
+</script>
