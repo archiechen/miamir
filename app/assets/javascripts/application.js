@@ -17,6 +17,7 @@
 //= require jquery.ui.slider
 //= require twitter/bootstrap
 //= require bootbox
+//= require jquery.flot
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync

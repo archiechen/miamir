@@ -83,4 +83,5 @@ Miamir::Application.routes.draw do
   match '/dashboard' => 'dashboard#index', :as => "dashboard", :via => :get
   match '/planning' => 'dashboard#planning', :as => "planning", :via => :get
   match '/review' => 'dashboard#review', :as => "review", :via => :get
+  match '/burning' => 'dashboard#burning', :as => "burnint", :via => :get
 end

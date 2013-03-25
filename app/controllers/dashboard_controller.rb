@@ -22,4 +22,26 @@ class DashboardController < ApplicationController
     end
   end
 
+  def burning
+    @burnings = []
+    @velocity = []
+    start = DateTime.now.beginning_of_day
+    10.times do
+      start += 1.day
+      @burnings.push([(start).to_i*1000,rand(100)])
+      @velocity.push([(start).to_i*1000,rand(10)])
+    end
+
+    start += 1.day
+    @burnings.push([(start).to_i*1000,nil])
+    @velocity.push([(start).to_i*1000,nil]) 
+    start += 1.day
+    @burnings.push([(start).to_i*1000,nil])
+    @velocity.push([(start).to_i*1000,nil])
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: [@burnings,@velocity] }
+    end
+  end
 end

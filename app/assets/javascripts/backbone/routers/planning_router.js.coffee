@@ -16,5 +16,5 @@ class Miamir.Routers.PlanningRouter extends Backbone.Router
     $("#tasks_wall").append(@ready_view.render().el)
     
 
-    @team_selector = new Miamir.Views.Teams.SelectorView(taskboards:[@ready_view,@backlog_tasks])
+    @team_selector = new Miamir.Views.Teams.SelectorView(taskboards:[@ready_view,@backlog_view])
 
