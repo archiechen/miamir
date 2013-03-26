@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
   validate :user_own_only_one_task,:progress_must_be_estimated,:ready_must_has_scale
 
   def self.emptying
-    Task.logger.debug("emptying start...")
+    Task.logger.info("emptying start...")
       tasks = Task.where(:status=>'Progress')
       tasks.each do |task|
         task.status = 'Ready'
@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
         task.partner = nil
         task.save(:validate=>false)
       end
-    Task.logger.debug("emptying end...")
+    Task.logger.info("emptying end...")
   end
 
   def serializable_hash(options={})
