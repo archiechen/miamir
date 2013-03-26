@@ -25,6 +25,8 @@ class Task < ActiveRecord::Base
           duration.minutes = (working_minutes <= 0 )? 60 : working_minutes
           duration.save()
         end
+        task.owner = nil
+        task.partner = nil
         task.save(:validate=>false)
       end
     Task.logger.debug("emptying end...")
