@@ -2,6 +2,8 @@ Miamir.Views.Tasks ||= {}
 
 class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   template: JST["backbone/templates/tasks/taskcard"]
+  gravatar_templ: _.template('<img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>">'),
+  memebers_templ: _.template('<div class="list-card-members"></div>')
 
   tagName: "li"
 
@@ -29,7 +31,7 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
     show_view = new Miamir.Views.Tasks.ShowView({model:@model})
     show_view.show()
 
-  render: ->
+  render: =>
     $(@el).html(@template(@model.toJSON()))
     $(@el).draggable({
         addClasses: false,
@@ -46,12 +48,16 @@ class Miamir.Views.Tasks.TaskCardView extends Backbone.View
       when 4 then @$('#scale').addClass("label-warning")
       when 8 then @$('#scale').addClass("label-danger")
 
+    @$('#card').append(@memebers_templ())
+    if not _.isNull(@model.get('owner_id'))
+      @$('.list-card-members').append(@gravatar_templ(@model.get('owner')))
+    if not _.isNull(@model.get('partner_id'))
+      @$('.list-card-members').append(@gravatar_templ(@model.get('partner')))
+
+
     return this
 
 class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCardView
-
-  gravatar_templ: _.template('<img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>">'),
-  memebers_templ: _.template('<div class="list-card-members"></div>')
 
   events:
     "click .list-card-members img:eq(0)" : "on_pair"
@@ -82,13 +88,3 @@ class Miamir.Views.Tasks.ProgressTaskCardView extends Miamir.Views.Tasks.TaskCar
         that.model.set(event.new_task)
         that.model.unbind "paired_completed"
       @model.leave()
-
-  render: =>
-    Miamir.Views.Tasks.TaskCardView.prototype.render.call(this);
-    @$('#card').append(@memebers_templ())
-    @$('.list-card-members').append(@gravatar_templ(@model.get('owner')))
-    if not _.isNull(@model.get('partner_id'))
-      @$('.list-card-members').append(@gravatar_templ(@model.get('partner')))
-
-    return this
-  
