@@ -19,12 +19,8 @@ test:
   timeout: 5000
 
 production:
-  adapter: postgresql
-  encoding: unicode
+  adapter: sqlite3
+  database: db/production.sqlite3
   pool: 5
-  database: d2vseaoj1f6bst
-  username: azgibsgwzgrklg
-  password: pTNqs8qkAvaQ7-RA1v_tVq-DsN
-  host: ec2-23-21-89-241.compute-1.amazonaws.com
-  port: 5432
+  timeout: 5000
 
