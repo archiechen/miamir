@@ -1,10 +1,10 @@
 require 'rubygems'
 require 'rufus/scheduler'  
 scheduler = Rufus::Scheduler.start_new
-scheduler.cron '10 23 * * *' do
-  puts "job starting ..."
+scheduler.cron '01 14 * * 1-5' do
+  Rails.logger.info "job starting ..."
   # every day of the week at 22:00 (10pm)
   Task.emptying()
   Team.burning()
-  puts "job ending ..."
+  Rails.logger.info "job ending ..."
 end
