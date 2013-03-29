@@ -17,7 +17,7 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{release_path} && bundle install &&
       cp #{deploy_to}/shared/config/*.yml config/ &&
-      rake db:migrate &&
+      rake RAILS_ENV=production db:migrate &&
       rake assets:precompile &&
       thin stop &&
       bundle exec thin -e production start -p 80  -d"
