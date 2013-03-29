@@ -14,17 +14,22 @@ Miamir::Application.configure do
   config.action_controller.perform_caching = false
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'miamir.net' }
+  # ActionMailer Config
+  # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
-  # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    :address => "corp.chinacache.com",
-    :port => 25,
-    :domain => "chinacache.com"
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "miamir.net",
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: ENV["GMAIL_USER"],
+    password: ENV["GMAIL_PASSWORD"]
   }
 
   # Print deprecation notices to the Rails logger

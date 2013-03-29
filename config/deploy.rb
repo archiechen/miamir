@@ -16,7 +16,7 @@ namespace :deploy do
   desc 'restart thin'
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{release_path} && bundle install &&
-      rake RAILS_ENV=production db:migrate &&
+      rake db:migrate &&
       rake assets:precompile &&
       thin stop &&
       bundle exec thin -e production start -p 80  -d"
