@@ -16,6 +16,7 @@ namespace :deploy do
   desc 'restart thin'
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "cd #{release_path} && bundle install &&
+      cp #{deploy_to}/shared/config/mail.yml config/ &&
       rake db:migrate &&
       rake assets:precompile &&
       thin stop &&
