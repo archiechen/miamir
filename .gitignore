@@ -17,4 +17,4 @@ rerun.txt
 pickle-email-*.html
 config/mail.yml
 
-config/database.yml.bak
+config/database.yml
