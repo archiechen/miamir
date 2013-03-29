@@ -1,8 +1,8 @@
-set :user, 'admin'
-set :domain, '192.168.8.201'
+set :user, 'root'
+set :domain, '106.187.95.9'
 set :application, 'miamir'
-set :repository,  'git://207.97.227.239/archiechen/miamir.git'
-set :deploy_to, '/home/admin/miamir'
+set :repository,  'git://github.com/archiechen/miamir.git'
+set :deploy_to, '/apps/miamir'
 set :scm, 'git'
 set :branch, 'master'
 set :keep_releases, 5
@@ -19,6 +19,6 @@ namespace :deploy do
       rake RAILS_ENV=production db:migrate &&
       rake assets:precompile &&
       thin stop &&
-      bundle exec thin -e production start -p 9000  -d"
+      bundle exec thin -e production start -p 80  -d"
   end
 end
