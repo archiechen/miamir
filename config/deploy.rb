@@ -20,6 +20,6 @@ namespace :deploy do
       rake RAILS_ENV=production db:migrate &&
       rake assets:precompile &&
       thin stop &&
-      bundle exec thin -e production start -p 80  -d"
+      bundle exec thin -e production start -p 80 -d"
   end
 end
