@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   before_filter :authenticate_user!
   skip_authorization_check
   
-  def index
+  def kanban
     if @current_team
       @ready_tasks = @current_team.tasks.where(:status=>'Ready').all
       @progress_tasks = @current_team.tasks.where(:status=>'Progress').all

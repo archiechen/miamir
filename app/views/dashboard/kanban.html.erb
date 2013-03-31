@@ -1,0 +1,8 @@
+<div id="tasks_wall" class="span12"></div>
+<script type="text/javascript">
+  $(function() {
+    // Blog is the app name
+    window.router = new Miamir.Routers.KanbanRouter({ready_tasks: <%= @ready_tasks.to_json.html_safe -%>,progress_tasks: <%= @progress_tasks.to_json.html_safe -%>,done_tasks: <%= @done_tasks.to_json.html_safe -%>});
+    Backbone.history.start();
+  });
+</script>

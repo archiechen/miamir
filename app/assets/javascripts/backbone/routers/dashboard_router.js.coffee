@@ -1,4 +1,4 @@
-class Miamir.Routers.DashboardRouter extends Backbone.Router
+class Miamir.Routers.KanbanRouter extends Backbone.Router
   initialize: (options) ->
     @ready_tasks = new Miamir.Collections.TasksCollection()
     @ready_tasks.reset options.ready_tasks
