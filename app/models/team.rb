@@ -14,6 +14,10 @@ class Team < ActiveRecord::Base
     end
   end
 
+  def total_scale_of_backlog
+    self.tasks.where(:status=>'New').sum("scale")
+  end
+
   def remain_of_today
     remain = self.tasks.select("team_id,sum(scale) as scale").where(:status=>['Ready','Progress']).group("team_id").first
     remain.nil?? 0 : remain.scale

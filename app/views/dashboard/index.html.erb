@@ -1,8 +1,59 @@
-<div id="tasks_wall" class="span12"></div>
+<div id="burning-chart" class="span8" style="height:325px"></div>
+<div class="span4">
+  <div class="row-fluid">
+    <div class="span12 well">
+    <% @current_team.members.each do |member| %>
+    <img src="http://gravatar.com/avatar/<%=member.gravatar%>?s=80&amp;d=retro&amp;r=x" title="<%=member.email%>" style=>
+    <% end %>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12 well">
+      Total scale of backlog:<%=@current_team.total_scale_of_backlog()%>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
   $(function() {
-    // Blog is the app name
-    window.router = new Miamir.Routers.DashboardRouter({ready_tasks: <%= @ready_tasks.to_json.html_safe -%>,progress_tasks: <%= @progress_tasks.to_json.html_safe -%>,done_tasks: <%= @done_tasks.to_json.html_safe -%>});
-    Backbone.history.start();
+    new Miamir.Views.Teams.SelectorView()
+
+    var colors = ['#750000', '#F90', '#777', '#555','#002646','#999','#bbb','#ccc','#eee'];
+    //var colors = ['#5F9B43', '#DB7D1F', '#BA4139', '#777','#555','#999','#bbb','#ccc','#eee'];
+    var options = {
+      colors: colors,
+      series: {
+        lines: { 
+          show: true, 
+          fill: true, 
+          lineWidth: 4, 
+          steps: false, 
+          fillColor: { colors: [{opacity: 0.4}, {opacity: 0}] } 
+        },
+        points: { 
+          show: true, 
+          radius: 4, 
+          fill: true
+        }
+      }, 
+      legend: {
+        position: 'ne'
+      },
+      tooltip: true,
+      tooltipOpts: {
+        content: '%s: %y'
+      },
+      xaxis: { mode: "time",timeformat: "%m/%d",timezone:"browser"}, 
+      grid: { borderWidth: 2, hoverable: true }
+    };
+    
+    var el = $("#burning-chart");
+    var data =[
+      {data:<%=@remain.to_json.html_safe%>,label:"Remain"},
+      {data:<%=@burning.to_json.html_safe%>,label:"Burning",
+        lines: { lineWidth: 2, fill: false }  
+      }]
+    if (el.length) {
+      $.plot(el, data, options );
+    }
   });
 </script>

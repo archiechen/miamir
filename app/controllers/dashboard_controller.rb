@@ -23,7 +23,7 @@ class DashboardController < ApplicationController
     end
   end
 
-  def burning
+  def index
     @burning = []
     @remain = []
     start = DateTime.now.beginning_of_day - 7.day
