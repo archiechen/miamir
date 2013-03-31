@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130329073830) do
+ActiveRecord::Schema.define(:version => 20130331081731) do
 
   create_table "burnings", :force => true do |t|
     t.integer  "burning"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20130329073830) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "redmine_project_id"
+    t.integer  "owner_id"
   end
 
   create_table "teams_users", :id => false, :force => true do |t|

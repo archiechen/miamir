@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :set_default_team
+  check_authorization :unless => :devise_controller?
 
   private
 
