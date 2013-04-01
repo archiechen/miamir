@@ -9,7 +9,7 @@ class MembersController < ApplicationController
     if @member.nil?
       render json:{:message => "user not found."},:status => :not_found
     else
-      #@team.members<<@member
+      @team.members<<@member
       respond_to do |format|
         if @team.save()
           format.json { render json: @member }

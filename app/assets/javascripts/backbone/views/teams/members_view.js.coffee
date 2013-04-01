@@ -25,13 +25,31 @@ class Miamir.Views.Teams.MembersView extends Backbone.View
   add_member: =>
     @options.members.create {email: @$("#member_email").val()},{
       wait: true
+      success:=>
+        @$("#member_email").val('')
       error:=>
         bootbox.alert "user not found."
     }
+    @$("#add_member").attr('disabled',"disabled")
+    @$("#add_member").addClass('disabled')
+
     
   render: =>  
     $(@el).html @template()
     @addAll() 
+    @$("#member_email").typeahead({
+      source: (query, process) =>
+        return $.getJSON(
+            '/autocomplete/users'
+            { term: query }
+            (data)->
+              return process(data)
+            )
+      updater:(item)=>
+        @$("#add_member").removeAttr('disabled')
+        @$("#add_member").removeClass('disabled')
+        return item
 
+    })
     return this   
 
