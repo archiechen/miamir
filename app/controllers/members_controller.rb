@@ -4,12 +4,12 @@ class MembersController < ApplicationController
   authorize_resource :team
   # POST /teams/1/members
   def create
-    @team = @current_team
+    @team = Team.find(params[:team_id])
     @member = User.where(params[:member]).first
     if @member.nil?
       render json:{:message => "user not found."},:status => :not_found
     else
-      @team.members<<@member
+      #@team.members<<@member
       respond_to do |format|
         if @team.save()
           format.json { render json: @member }
@@ -24,7 +24,7 @@ class MembersController < ApplicationController
   # DELETE /teams/1/members/1
   # DELETE /teams/1/members/1.json
   def destroy
-    @team = @current_team
+    @team = Team.find(params[:team_id])
     @team.members.delete(current_user)
     if @current_team == @team
       session[:current_team]=nil

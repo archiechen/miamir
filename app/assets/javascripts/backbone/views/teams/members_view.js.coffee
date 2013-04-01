@@ -16,15 +16,18 @@ class Miamir.Views.Teams.MembersView extends Backbone.View
     @options.members.bind "add",@addOne
 
   addOne:(member)=>
-    if !_.isUndefined(member.get("gravatar"))
-      @$("#members").append @gravatar_templ(member.toJSON())
+    @$("#members").append @gravatar_templ(member.toJSON())
 
   addAll:=>
     @$("#members").empty()
     @options.members.each @addOne
 
   add_member: =>
-    console.log "add member " + @$("#member_email").val() 
+    @options.members.create {email: @$("#member_email").val()},{
+      wait: true
+      error:=>
+        bootbox.alert "user not found."
+    }
     
   render: =>  
     $(@el).html @template()
