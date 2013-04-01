@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
         session[:current_team] = current_user.teams.first
       end
       @current_team = session[:current_team]
-      puts @current_team.members
+      
     end
 end

@@ -2,7 +2,7 @@ Miamir.Views.Tasks ||= {}
 
 class Miamir.Views.Tasks.TaskCardView extends Backbone.View
   template: JST["backbone/templates/tasks/taskcard"]
-  gravatar_templ: _.template('<img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>">'),
+  gravatar_templ: _.template('<img class="member" src="http://gravatar.com/avatar/<%=gravatar%>?s=40&amp;d=retro&amp;r=x" title="<%=email%>">')
   memebers_templ: _.template('<div class="list-card-members"></div>')
 
   tagName: "li"

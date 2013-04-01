@@ -6,7 +6,7 @@ class Ability
       # not logged in
       cannot :manager, :all
     else
-      # admin
+      # logged in
       can :manage, Team, :owner_id => user.id
     end
   end
