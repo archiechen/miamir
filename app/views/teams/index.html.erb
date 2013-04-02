@@ -20,13 +20,6 @@
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_team_path(team), :class => 'btn btn-mini' %>
-          <% if current_user.teams.include?(team) %>
-          <%= link_to t('.member', :default => t("helpers.links.leave")),
-                      team_member_path(team,current_user), :class => 'btn btn-mini',:method => :delete %>
-          <% else %>
-          <%= link_to t('.member', :default => t("helpers.links.join")),
-                      team_members_path(team), :class => 'btn btn-mini',:method => :post %>
-          <% end %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       team_path(team),
                       :method => :delete,

@@ -1,10 +1,13 @@
 class TeamsController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
-  
+  skip_authorize_resource :only=>[:current]
+  skip_authorization_check :only=>[:current]
+
   # GET /teams
   # GET /teams.json
   def index
+    puts @teams
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @teams }
@@ -25,7 +28,7 @@ class TeamsController < ApplicationController
   # GET /teams/new
   # GET /teams/new.json
   def new
-    @team = Team.new
+    @team = Team.new(:owner => current_user)
 
     respond_to do |format|
       format.html # new.html.erb

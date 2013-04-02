@@ -27,17 +27,20 @@ class DashboardController < ApplicationController
     @burning = []
     @remain = []
     start = DateTime.now.beginning_of_day - 7.day
-    burnings = @current_team.burnings.where("created_at >= ?",start)
-    10.times do
-      burning = burnings.find{ |x| x.created_at.beginning_of_day == start}
-      if !burning.nil?
-        @remain.push([burning.created_at.beginning_of_day.to_i*1000,burning.remain])
-        @burning.push([burning.created_at.beginning_of_day.to_i*1000,burning.burning])
-      else
-        @remain.push([(start).to_i*1000,nil])
-        @burning.push([(start).to_i*1000,nil])
+    if !@current_team.nil?
+      burnings = @current_team.burnings.where("created_at >= ?",start)
+
+      10.times do
+        burning = burnings.find{ |x| x.created_at.beginning_of_day == start}
+        if !burning.nil?
+          @remain.push([burning.created_at.beginning_of_day.to_i*1000,burning.remain])
+          @burning.push([burning.created_at.beginning_of_day.to_i*1000,burning.burning])
+        else
+          @remain.push([(start).to_i*1000,nil])
+          @burning.push([(start).to_i*1000,nil])
+        end
+        start += 1.day
       end
-      start += 1.day
     end
 
     respond_to do |format|
