@@ -7,6 +7,9 @@ class Ability
       cannot :manager, :all
     else
       # logged in
+      can :current , Team  do |team|
+        team.members.include? user
+      end
       can :manage, Team, :owner_id => user.id
     end
   end
