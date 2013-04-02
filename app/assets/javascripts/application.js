@@ -15,6 +15,7 @@
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
 //= require jquery.ui.slider
+//= require jquery.ui.autocomplete
 //= require twitter/bootstrap
 //= require bootbox
 //= require jquery.flot

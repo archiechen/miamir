@@ -9,7 +9,7 @@
   <div class="control-group">
     <%= f.label :team, :class => 'control-label' %>
     <div class="controls">
-      <%= f.select :team_id, Team.all.map{ |c| [c.name, c.id] } %>
+      <%= f.select :team_id, current_user.teams.map{ |c| [c.name, c.id] } %>
     </div>
   </div>
   <div class="control-group">

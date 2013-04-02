@@ -68,6 +68,7 @@ module Miamir
       g.helper_specs false
     end
 
+
     config.to_prepare do
       Devise::SessionsController.layout "devise"
       Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "application" : "devise" }

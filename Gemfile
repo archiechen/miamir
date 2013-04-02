@@ -27,6 +27,7 @@ end
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'devise'
+gem 'cancan'
 gem "therubyracer", ">= 0.10.2", :group => :assets, :platform => :ruby
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"

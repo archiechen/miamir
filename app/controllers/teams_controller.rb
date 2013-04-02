@@ -1,10 +1,10 @@
 class TeamsController < ApplicationController
   before_filter :authenticate_user!
+  load_and_authorize_resource
+  
   # GET /teams
   # GET /teams.json
   def index
-    @teams = Team.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @teams }
@@ -42,7 +42,7 @@ class TeamsController < ApplicationController
   # POST /teams.json
   def create
     @team = Team.new(params[:team])
-
+    @team.owner = current_user
     respond_to do |format|
       if @team.save
         format.html { redirect_to @team, notice: 'Team was successfully created.' }

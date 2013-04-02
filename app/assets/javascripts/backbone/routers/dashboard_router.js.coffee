@@ -1,25 +1,55 @@
 class Miamir.Routers.DashboardRouter extends Backbone.Router
   initialize: (options) ->
-    @ready_tasks = new Miamir.Collections.TasksCollection()
-    @ready_tasks.reset options.ready_tasks
-
-    @progress_tasks = new Miamir.Collections.TasksCollection()
-    @progress_tasks.reset options.progress_tasks
-    
-    @done_tasks = new Miamir.Collections.TasksCollection()
-    @done_tasks.reset options.done_tasks
-
+    @remain_data = options.remain_data
+    @burning_data = options.burning_data
+    @members = new Miamir.Collections.MembersCollection(team_id:options.team_id)
+    @members.reset options.members
   routes:
     ".*"        : "index"
 
-  index: ->
-    @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(from_tasks:[@progress_tasks,@done_tasks], tasks: @ready_tasks, accepts:"#Progress .well-taskcard,#Done .well-taskcard")
-    $("#tasks_wall").html(@ready_view.render().el)
+  index: =>
+    @team_selector = new Miamir.Views.Teams.SelectorView()
+    @members_view = new Miamir.Views.Teams.MembersView(members:@members)
+    $("#members_board").prepend(@members_view.render().el)
 
-    @progress_view = new Miamir.Views.Tasks.ProgressTaskboardView(from_tasks:[@ready_tasks,@done_tasks], tasks: @progress_tasks, accepts:"#Ready .well-taskcard,#Done .well-taskcard")
-    $("#tasks_wall").append(@progress_view.render().el)
+    options = 
+      colors: ["#750000", "#F90", "#777", "#555","#002646","#999","#bbb","#ccc","#eee"]
+      series: 
+        lines: 
+          show: true 
+          fill: true
+          lineWidth: 4 
+          steps: false
+          fillColor:  
+            colors: [
+              {opacity: 0.4}
+              {opacity: 0}
+            ] 
+        points: 
+          show: true
+          radius: 4
+          fill: true
+      legend: 
+        position: 'ne'
+      tooltip: true
+      tooltipOpts: 
+        content: '%s: %y'
+      xaxis: 
+        mode: "time"
+        timeformat: "%m/%d"
+        timezone:"browser"
+      grid: 
+        borderWidth: 2
+        hoverable: true
+    
+    
+    el = $("#burning-chart")
 
-    @done_view = new Miamir.Views.Tasks.DoneTaskboardView(from_tasks:[@progress_tasks], tasks: @done_tasks, accepts:"#Progress .well-taskcard")
-    $("#tasks_wall").append(@done_view.render().el)
+    data = [
+      { data:@remain_data, label:"Remain" }
+      { data:@burning_data, label:"Burning" }
+    ]
 
-    @team_selector = new Miamir.Views.Teams.SelectorView(taskboards:[@ready_view,@progress_view,@done_view])
+    if el.length
+      $.plot(el, data, options )
+    
