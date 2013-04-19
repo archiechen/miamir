@@ -13,6 +13,8 @@ class Miamir.Routers.KanbanRouter extends Backbone.Router
     @done_tasks = new Miamir.Collections.TasksCollection()
     @done_tasks.reset options.done_tasks
 
+    @team = new Miamir.Models.Team(options.team)
+
   routes:
     ".*"        : "index"
 
@@ -23,7 +25,7 @@ class Miamir.Routers.KanbanRouter extends Backbone.Router
     @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(from_tasks:[@backlog_tasks,@progress_tasks,@done_tasks], tasks: @ready_tasks, accepts:"#Backlog .well-taskcard,#Progress .well-taskcard,#Done .well-taskcard")
     $("#tasks_wall").append(@ready_view.render().el)
 
-    @progress_view = new Miamir.Views.Tasks.ProgressTaskboardView(from_tasks:[@ready_tasks,@done_tasks], tasks: @progress_tasks, accepts:"#Ready .well-taskcard,#Done .well-taskcard")
+    @progress_view = new Miamir.Views.Tasks.ProgressTaskboardView(team:@team,from_tasks:[@ready_tasks,@done_tasks], tasks: @progress_tasks, accepts:"#Ready .well-taskcard,#Done .well-taskcard")
     $("#tasks_wall").append(@progress_view.render().el)
 
     @done_view = new Miamir.Views.Tasks.DoneTaskboardView(from_tasks:[@progress_tasks], tasks: @done_tasks, accepts:"#Progress .well-taskcard")

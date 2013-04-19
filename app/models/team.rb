@@ -14,6 +14,14 @@ class Team < ActiveRecord::Base
     end
   end
 
+  def serializable_hash(options={})
+    options = { 
+      :methods => [:working_in_progress_limit],
+      :except =>  [:owner_id,:created_at, :updated_at]
+    }.update(options)
+    super(options)
+  end
+
   def total_scale_of_backlog
     self.tasks.where(:status=>'New').sum("scale")
   end

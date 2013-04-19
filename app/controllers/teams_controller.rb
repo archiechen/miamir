@@ -77,6 +77,6 @@ class TeamsController < ApplicationController
   # PUT /teams/1/current
   def current
     session[:current_team] = @team
-    render json:{},:status => 200
+    render json: @team,:status => 200
   end
 end

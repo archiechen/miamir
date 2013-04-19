@@ -11,7 +11,7 @@ class Miamir.Views.Teams.SelectorView extends Backbone.View
     $.ajax "/teams/"+$(event.currentTarget).val()+"/current",
       type: "PUT"
       dataType: 'json'
-      success:(new_task)->
+      success:(current_team)->
         that.$('#current_team_name').html(event.target.text+'<b class="caret"></b>');
         that.$('.team-item').removeClass('active');
         that.$(event.currentTarget).addClass('active');
@@ -19,6 +19,6 @@ class Miamir.Views.Teams.SelectorView extends Backbone.View
           window.location.reload(false)
         else
           _.each that.options.taskboards,(board)->
-            board.fetch($(event.currentTarget).val())
+            board.fetch(current_team)
         
 

@@ -3,6 +3,7 @@ Miamir.Views.Tasks ||= {}
 #必须继承后使用
 class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   template: JST["backbone/templates/tasks/taskboard"]
+  wip_tmpl:_.template('<span id="wip_limit" class="label label-important pull-right"><%=limit%></span>')
   
   className: "span3"
 
@@ -26,18 +27,16 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     task.unbind 'drag_completed',@remove
     task.bind 'drag_completed',@remove
     view = new Miamir.Views.Tasks.TaskCardView({model : task})
-    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)+task.get("scale"))
     @$("#list-cards").append(view.render().el).fadeIn()
 
   remove:(event)=>
     @options.tasks.remove event.old_task
-    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)-event.old_task.get("scale"))
     event.old_task.unbind 'drag_completed',@remove
 
-  fetch:(team_id)->
-    @options.tasks.fetch {data:{task:{status:@name,team_id:team_id}}}
+  fetch:(team)->
+    @options.tasks.fetch {data:{task:{status:@name,team_id:team.id}}}
 
-  render: () =>
+  render: () ->
     $(@el).html(@template(name:@name))
     @addAll()
     @$(".well-taskboard").attr("id",@name)
@@ -101,9 +100,6 @@ class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.Taskboa
     Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)
     @name = "Backlog"
 
-  fetch:(team_id)=>
-    @options.tasks.fetch {data:{task:{status:"New",team_id:team_id}}}
-
   dropped_handle:(from_task)=>
     that = this
     from_task.bind "drag_completed",@on_cancel
@@ -137,7 +133,6 @@ class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.Taskbo
   #override add one
   addOne: (task) =>
     task.bind 'drag_completed',@remove
-    @$("#total_scale").html(parseInt(@$("#total_scale").html(),10)+task.get("scale"))
     view = new Miamir.Views.Tasks.ProgressTaskCardView({model : task})
     @$("#list-cards").append(view.render().el).fadeIn()
 
@@ -149,6 +144,18 @@ class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.Taskbo
     @options.tasks.add(event.new_task,{silent: true})
     @render()
     event.old_task.unbind "drag_completed",@on_checkin
+
+  #override
+  fetch:(team)->
+    @$("#wip_limit").html(team.working_in_progress_limit)
+    Miamir.Views.Tasks.TaskboardView.prototype.fetch.call(this,team)
+
+  #override
+  render: () =>
+    Miamir.Views.Tasks.TaskboardView.prototype.render.call(this)
+    @$(".taskboard-header").append(@wip_tmpl({limit:@options.team.get('working_in_progress_limit')}))
+    return this
+
 
 class Miamir.Views.Tasks.DoneTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () ->
