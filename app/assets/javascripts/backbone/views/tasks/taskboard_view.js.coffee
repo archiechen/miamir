@@ -60,7 +60,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   on_error:(xhr,task)=>
     bootbox.classes "alert-box"
     switch xhr.status
-      when 400 then bootbox.alert "一手提不住两条鱼，一眼看不清两行代码。"
+      when 400 then bootbox.alert "超过了WIP上限，请消除瓶颈先！"
       when 401 then bootbox.alert "这不是你的任务。"
       when 409 
         bootbox.classes "prompt-box"

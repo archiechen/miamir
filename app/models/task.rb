@@ -12,7 +12,7 @@ class Task < ActiveRecord::Base
 
   before_save :default_values
 
-  validate :user_own_only_one_task,:progress_must_be_estimated,:ready_must_has_scale
+  validate :working_in_progress_limit,:progress_must_be_estimated,:ready_must_has_scale
 
   def self.emptying
     tasks = Task.where(:status=>'Progress')
@@ -100,16 +100,10 @@ class Task < ActiveRecord::Base
       self.status ||='New'
     end
 
-    def user_own_only_one_task
-      if partner
-        if (status=='Progress') and (!partner.idle?) and (partner.partnership!=self)
+    def working_in_progress_limit
+        if (status=='Progress') and team.progress_overflow?
           errors[:duplicate_task]<<"user own only one task"
         end
-      else
-        if (status=='Progress') and (!owner.idle?) and (owner.task!=self)
-          errors[:duplicate_task]<<"user own only one task"
-        end
-      end
     end
 
     def progress_must_be_estimated

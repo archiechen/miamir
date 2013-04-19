@@ -29,7 +29,7 @@
           <a class="brand" href="#">Miamir</a>
           <div class="container-fluid nav-collapse">
             <ul id="main-nav" class="nav">
-              <li <%= 'class=active' if request.original_fullpath().include?('/dashboard') %>><%= link_to "Dashboard", "/dashboard"  %></li>
+              <li <%= 'class=active' if request.original_fullpath().include?('/dashboard') or request.original_fullpath() =~ /\/$/ %>><%= link_to "Dashboard", "/dashboard"  %></li>
               <li <%= 'class=active' if request.original_fullpath().include?('/kanban') %>><%= link_to "Kanban", "/kanban"  %></li>
               <li <%= 'class=active' if request.original_fullpath().include?('/review') %>><%= link_to "Review", "/review"  %></li>
             </ul>

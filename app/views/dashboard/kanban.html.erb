@@ -1,5 +1,7 @@
-<%= link_to '查看所有任务',tasks_path,:class => 'btn btn-large pull-right' %>
-<a href="#taskModal" role="button" class="btn btn-large btn-success pull-right" data-toggle="modal">创建新任务</a>
+<div class="btn-group pull-right">
+<%= link_to '查看所有任务',tasks_path,:class => 'btn' %> 
+<a href="#taskModal" role="button" class="btn btn-success" data-toggle="modal">创建新任务</a>
+</div>
 <div id="tasks_wall" class="span12" style="margin:auto;"></div>
 <script type="text/javascript">
   $(function() {

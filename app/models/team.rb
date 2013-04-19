@@ -28,6 +28,14 @@ class Team < ActiveRecord::Base
     burning.nil?? 0 : burning.scale
   end
 
+  def working_in_progress_limit
+    (2*self.members.count-1)
+  end
+
+  def progress_overflow?
+    self.tasks.where(:status=>'Progress').count >= self.working_in_progress_limit
+  end
+
   private
 
     def join_members

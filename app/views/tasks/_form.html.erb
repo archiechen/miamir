@@ -1,17 +1,11 @@
 <%= form_for @task, :html => { :class => 'form-horizontal' } do |f| %>
   <%= hidden_field(:task, :priority)%>
   <div class="control-group">
-    <%= f.label :title, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_area :title, :class => 'text_area',:size=>'12x3' %>
-    </div>
+      <%= f.text_area :title, :class => 'span12',:size=>'24x3', :placeholder => "Title"%>
   </div>
 
   <div class="control-group">
-    <%= f.label :description, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_area :description, :class => 'text_area',:size=>'12x3' %>
-    </div>
+      <%= f.text_area :description, :class => 'span12',:size=>'24x3',:placeholder => "Description" %>
   </div>
 
   <div class="control-group pull-right">
