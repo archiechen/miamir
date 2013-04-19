@@ -3,34 +3,19 @@
   <div class="control-group">
     <%= f.label :title, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_area :title, :class => 'text_area',:size=>'24x6' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :team, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.select :team_id, current_user.teams.map{ |c| [c.name, c.id] } %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :priority, :class => 'control-label' %>
-    <div class="controls">
-      <div style="margin-bottom: 2em">  
-        <span id="priorityAmount" style="border:0; color:#f6931f; font-weight:bold;"></span>             
-        <div id="prioritySlider" class="slider-primary" style="margin-top: 1em;width:50%"></div>
-      </div>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :description, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_area :description, :class => 'text_area',:size=>'24x6' %>
+      <%= f.text_area :title, :class => 'text_area',:size=>'12x3' %>
     </div>
   </div>
 
-  <div class="form-actions">
+  <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :description, :class => 'text_area',:size=>'12x3' %>
+    </div>
+  </div>
+
+  <div class="control-group pull-right">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     <%= f.submit nil, :class => 'btn btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                tasks_path, :class => 'btn' %>
   </div>
 <% end %>

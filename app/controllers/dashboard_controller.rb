@@ -9,6 +9,7 @@ class DashboardController < ApplicationController
       @progress_tasks = @current_team.tasks.where(:status=>'Progress').all
       @done_tasks = @current_team.tasks.where(:status=>'Done').all
     end
+    @task = Task.new
   end
 
   def review
