@@ -4,11 +4,11 @@ Miamir.Views.Tasks ||= {}
 class Miamir.Views.Tasks.TaskboardView extends Backbone.View
   template: JST["backbone/templates/tasks/taskboard"]
   
-  className: "span4"
+  className: "span3"
 
   initialize: () ->
     if not _.isUndefined(@options.className)
-      @$el.removeClass('span4')
+      @$el.removeClass('span3')
       @$el.addClass(@options.className)
     @options.tasks.bind('reset', @addAll)
     @options.tasks.bind('add', @addOne) 
