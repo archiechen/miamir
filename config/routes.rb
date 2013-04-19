@@ -82,7 +82,6 @@ Miamir::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
   match '/dashboard' => 'dashboard#index', :as => "dashboard", :via => :get
   match '/kanban' => 'dashboard#kanban', :as => "kanban", :via => :get
-  match '/planning' => 'dashboard#planning', :as => "planning", :via => :get
   match '/review' => 'dashboard#review', :as => "review", :via => :get
   match '/autocomplete/users' => 'autocomplete#users', :as => "autocomplete_users", :via => :get
 end
