@@ -125,6 +125,18 @@ class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.Taskboard
     this.render()
     event.old_task.unbind "drag_completed",@on_checkout
 
+  #override
+  fetch:(team)->
+    @$("#wip_limit").html(team.working_in_ready_limit)
+    Miamir.Views.Tasks.TaskboardView.prototype.fetch.call(this,team)
+
+  #override
+  render: () =>
+    Miamir.Views.Tasks.TaskboardView.prototype.render.call(this)
+    @$(".taskboard-header").append(@wip_tmpl({limit:@options.team.get('working_in_ready_limit')}))
+    return this
+
+
 class Miamir.Views.Tasks.ProgressTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () ->
     Miamir.Views.Tasks.TaskboardView.prototype.initialize.call(this)

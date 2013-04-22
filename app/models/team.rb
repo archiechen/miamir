@@ -16,7 +16,7 @@ class Team < ActiveRecord::Base
 
   def serializable_hash(options={})
     options = { 
-      :methods => [:working_in_progress_limit],
+      :methods => [:working_in_progress_limit,:working_in_ready_limit],
       :except =>  [:owner_id,:created_at, :updated_at]
     }.update(options)
     super(options)
@@ -37,11 +37,19 @@ class Team < ActiveRecord::Base
   end
 
   def working_in_progress_limit
-    (2*self.members.count-1)
+    (self.members.count+4)
+  end
+
+  def working_in_ready_limit
+    (self.members.count)
   end
 
   def progress_overflow?
     self.tasks.where(:status=>'Progress').count >= self.working_in_progress_limit
+  end
+
+  def ready_overflow?
+    self.tasks.where(:status=>'Ready').count >= self.working_in_ready_limit
   end
 
   private

@@ -104,6 +104,9 @@ class Task < ActiveRecord::Base
         if (status=='Progress') and team.progress_overflow?
           errors[:duplicate_task]<<"user own only one task"
         end
+        if (status=='Ready') and team.ready_overflow?
+          errors[:duplicate_task]<<"user own only one task"
+        end
     end
 
     def progress_must_be_estimated

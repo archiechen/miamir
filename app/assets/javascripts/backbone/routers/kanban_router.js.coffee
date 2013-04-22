@@ -22,7 +22,7 @@ class Miamir.Routers.KanbanRouter extends Backbone.Router
     @backlog_view = new Miamir.Views.Tasks.BacklogTaskboardView(from_tasks:[@ready_tasks], tasks:@backlog_tasks, accepts:"#Ready .well-taskcard")
     $("#tasks_wall").html(@backlog_view.render().el)
 
-    @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(from_tasks:[@backlog_tasks,@progress_tasks,@done_tasks], tasks: @ready_tasks, accepts:"#Backlog .well-taskcard,#Progress .well-taskcard,#Done .well-taskcard")
+    @ready_view = new Miamir.Views.Tasks.ReadyTaskboardView(team:@team,from_tasks:[@backlog_tasks,@progress_tasks,@done_tasks], tasks: @ready_tasks, accepts:"#Backlog .well-taskcard,#Progress .well-taskcard,#Done .well-taskcard")
     $("#tasks_wall").append(@ready_view.render().el)
 
     @progress_view = new Miamir.Views.Tasks.ProgressTaskboardView(team:@team,from_tasks:[@ready_tasks,@done_tasks], tasks: @progress_tasks, accepts:"#Ready .well-taskcard,#Done .well-taskcard")

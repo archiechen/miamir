@@ -126,7 +126,9 @@ class TasksController < ApplicationController
         @task.checkout(current_user)
         render json: @task
       rescue ActiveRecord::RecordInvalid => invalid
-        if @task.errors.has_key?(:scale)
+        if @task.errors.has_key?(:duplicate_task)
+          render json:{},:status => 400
+        elsif @task.errors.has_key?(:scale)
           render json:{},:status => 412
         end
       end
