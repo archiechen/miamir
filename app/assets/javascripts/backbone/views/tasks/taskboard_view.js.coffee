@@ -109,6 +109,11 @@ class Miamir.Views.Tasks.BacklogTaskboardView extends Miamir.Views.Tasks.Taskboa
     this.options.tasks.add(event.new_task,{silent: true})
     this.render()
     event.old_task.unbind "drag_completed",@on_cancel
+
+  #override
+  fetch:(team)->
+    @options.tasks.fetch {data:{task:{status:"New",team_id:team.id}}}
+
   
 class Miamir.Views.Tasks.ReadyTaskboardView extends Miamir.Views.Tasks.TaskboardView
   initialize: () ->
