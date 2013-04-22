@@ -14,7 +14,7 @@ class Miamir.Views.Tasks.TaskboardView extends Backbone.View
     @options.tasks.bind('reset', @addAll)
     @options.tasks.bind('add', @addOne) 
     @options.tasks.comparator = (task)->
-      return 100-task.get 'priority'
+      return -(new Date(task.get('updated_at')).getTime())
     _.bindAll @, "addOne"
     _.bindAll @, "fetch"
     

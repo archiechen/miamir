@@ -2,7 +2,7 @@
 class Task < ActiveRecord::Base
   attr_accessible :team_id, :team, :partner, :owner, :priority, :scale, :estimate, :description, :status, :title
 
-  default_scope order('priority DESC')
+  default_scope order('updated_at DESC')
 
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
   belongs_to :partner, :class_name=>"User", :foreign_key=>"partner_id"
