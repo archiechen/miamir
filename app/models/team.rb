@@ -2,6 +2,8 @@ class Team < ActiveRecord::Base
   attr_accessible :name, :owner
   has_many :tasks
   has_many :burnings
+  has_many :accumulations
+
   has_and_belongs_to_many :members,:class_name=>"User"
 
   belongs_to :owner, :class_name=>"User", :foreign_key=>"owner_id"
@@ -11,6 +13,14 @@ class Team < ActiveRecord::Base
   def self.burning
     Team.all().each do |team|
       team.burnings.create(:remain => team.remain_of_today(),:burning=> team.burning_of_today())
+    end
+  end
+
+  def self.accumulate
+    Team.all().each do |team|
+      team.accumulations.create(:status=>'Ready',:amount=>team.tasks.where(:status=>'Ready').count)
+      team.accumulations.create(:status=>'Progress',:amount=>team.tasks.where(:status=>'Progress').count)
+      team.accumulations.create(:status=>'Done',:amount=>team.tasks.where(:status=>'Done').count)
     end
   end
 

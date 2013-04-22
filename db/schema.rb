@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130331081731) do
+ActiveRecord::Schema.define(:version => 20130422071153) do
+
+  create_table "accumulations", :force => true do |t|
+    t.string   "status"
+    t.integer  "team_id"
+    t.integer  "amount"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "burnings", :force => true do |t|
     t.integer  "burning"
