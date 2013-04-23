@@ -2,6 +2,9 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
   initialize: (options) ->
     @remain_data = options.remain_data
     @burning_data = options.burning_data
+    @ready_data = options.ready_data
+    @progress_data = options.progress_data
+    @done_data = options.done_data
     @members = new Miamir.Collections.MembersCollection(team_id:options.team_id)
     @members.reset options.members
   routes:
@@ -12,9 +15,26 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
     @members_view = new Miamir.Views.Teams.MembersView(members:@members)
     $("#members_board").prepend(@members_view.render().el)
 
+    burnings_data = [
+      { data:@remain_data, label:"Remain" }
+      { data:@burning_data, label:"Burning" }
+    ]
+
+    accumulation_data = [
+      { data:@done_data, label:"Done" }
+      { data:@progress_data, label:"Progress" }
+      { data:@ready_data, label:"Ready" }
+    ]
+
+    @draw($("#burning-chart"), false, burnings_data)
+    @draw($("#accumulation-chart"), true, accumulation_data)
+
+  draw: (el,stack,data)=>
+
     options = 
       colors: ["#750000", "#F90", "#777", "#555","#002646","#999","#bbb","#ccc","#eee"]
       series: 
+        stack: stack
         lines: 
           show: true 
           fill: true
@@ -30,26 +50,22 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
           radius: 4
           fill: true
       legend: 
-        position: 'ne'
+        position: 'nw'
       tooltip: true
       tooltipOpts: 
         content: '%s: %y'
       xaxis: 
         mode: "time"
         timeformat: "%m/%d"
+        minTickSize: [1, "day"]
         timezone:"browser"
       grid: 
         borderWidth: 2
         hoverable: true
     
-    
-    el = $("#burning-chart")
-
-    data = [
-      { data:@remain_data, label:"Remain" }
-      { data:@burning_data, label:"Burning" }
-    ]
-
     if el.length
       $.plot(el, data, options )
+
+
+
     

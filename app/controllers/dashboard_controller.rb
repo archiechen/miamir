@@ -21,21 +21,19 @@ class DashboardController < ApplicationController
   def index
     @burning = []
     @remain = []
-    start = DateTime.now.beginning_of_day - 7.day
+    @ready =[]
+    @progress =[]
+    @done =[]
+    start = DateTime.now.beginning_of_day - 14.day
     if !@current_team.nil?
       burnings = @current_team.burnings.where("created_at >= ?",start)
-
-      10.times do
-        burning = burnings.find{ |x| x.created_at.beginning_of_day == start}
-        if !burning.nil?
-          @remain.push([burning.created_at.beginning_of_day.to_i*1000,burning.remain])
-          @burning.push([burning.created_at.beginning_of_day.to_i*1000,burning.burning])
-        else
-          @remain.push([(start).to_i*1000,nil])
-          @burning.push([(start).to_i*1000,nil])
-        end
-        start += 1.day
-      end
+      accumulations = @current_team.accumulations.where("created_at >= ?",start).group_by{|d| d[:status]}
+      
+      @remain = burnings.map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:remain]]}
+      @burning = burnings.map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:burning]]}
+      @ready = accumulations["Ready"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
+      @progress = accumulations["Progress"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
+      @done = accumulations["Done"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
     end
 
     respond_to do |format|
