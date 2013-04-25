@@ -26,7 +26,7 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
       { data:@ready_data, label:"Ready" }
     ]
 
-    @draw($("#burning-chart"), false, burnings_data)
+    @draw($("#burning-chart"), null, burnings_data)
     @draw($("#accumulation-chart"), true, accumulation_data)
 
   draw: (el,stack,data)=>
@@ -43,7 +43,8 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
           fillColor:  
             colors: [
               {opacity: 0.4}
-              {opacity: 0}
+              {opacity: 0.4}
+              {opacity: 0.4}
             ] 
         points: 
           show: true
