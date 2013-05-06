@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
       @backlog_tasks = @current_team.tasks.where(:status=>'New').all
       @ready_tasks = @current_team.tasks.where(:status=>'Ready').all
       @progress_tasks = @current_team.tasks.where(:status=>'Progress').all
-      @done_tasks = @current_team.tasks.where(:status=>'Done').all
+      @done_tasks = @current_team.tasks.where(:status=>'Done').limit(20)
     end
     @task = Task.new
   end
