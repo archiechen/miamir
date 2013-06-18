@@ -47,7 +47,7 @@ class Team < ActiveRecord::Base
   end
 
   def working_in_progress_limit
-    (self.members.count+4)
+    (self.members.count+2)
   end
 
   def working_in_ready_limit
