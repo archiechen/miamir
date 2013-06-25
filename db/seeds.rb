@@ -7,13 +7,13 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :email => 'yachuan.chen@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi'
+user = User.create! :email => 'yachuan.chen@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi', :confirmed_at=>Time.new
 user.save()
 puts 'New user created: ' << user.email
 
 team1 = Team.create! :name =>"Miami", :owner => user
 puts "New team created: " << team1.name
-user2 = User.create! :email => 'yue.zhang@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi'
+user2 = User.create! :email => 'yue.zhang@chinacache.com', :password => 'woaixuexi', :password_confirmation => 'woaixuexi', :confirmed_at=>Time.new
 user2.teams<<team1
 user2.save()
 puts 'New user created: ' << user2.email

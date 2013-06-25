@@ -26,10 +26,10 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
       { data:@ready_data, label:"Ready" }
     ]
 
-    @draw($("#burning-chart"), null, burnings_data)
-    @draw($("#accumulation-chart"), true, accumulation_data)
+    @draw($("#burning-chart"), null, burnings_data,0)
+    @draw($("#accumulation-chart"), true, accumulation_data,_.min(_.map(@done_data,(d)-> d[1])))
 
-  draw: (el,stack,data)=>
+  draw: (el,stack,data,min)=>
 
     options = 
       colors: ["#750000", "#F90", "#777", "#555","#002646","#999","#bbb","#ccc","#eee"]
@@ -60,6 +60,8 @@ class Miamir.Routers.DashboardRouter extends Backbone.Router
         timeformat: "%m/%d"
         minTickSize: [1, "day"]
         timezone:"browser"
+      yaxis:
+        min: min
       grid: 
         borderWidth: 2
         hoverable: true

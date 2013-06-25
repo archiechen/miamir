@@ -31,9 +31,9 @@ class DashboardController < ApplicationController
       
       @remain = burnings.map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:remain]]}
       @burning = burnings.map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:burning]]}
-      @ready = accumulations["Ready"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
-      @progress = accumulations["Progress"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
-      @done = accumulations["Done"].map{|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
+      @ready = accumulations["Ready"].try(:map) {|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
+      @progress = accumulations["Progress"].try(:map) {|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
+      @done = accumulations["Done"].try(:map) {|m|[m[:created_at].beginning_of_day.to_i*1000,m[:amount]]}
     end
 
     respond_to do |format|
